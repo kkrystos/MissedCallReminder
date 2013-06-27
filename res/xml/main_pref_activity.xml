@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:title="Missed Call Reminder" >
+
+    <PreferenceCategory android:title="Aplikacja" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autostart"
+            android:summary="Ustaw aplikacje jako aktywną"
+            android:title="Uruchom aplikację" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Zdefiniowane numery" >
+        <Preference
+            android:name="add_numbers"
+            android:key="editTextPref"
+            android:summary="Dodaj nowe numery"
+            android:title="Zdefiniuj filtrowane numery" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Przypominanie" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="missCallCheck"
+            android:summary="Przypominaj o połączeniach "
+            android:title="Nieodebrane połączenia" >
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="missSMSCheck"
+            android:summary="Przypominaj o SMSach"
+            android:title="Nieodebrane SMS" >
+        </CheckBoxPreference>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="missMMSCheck"
+            android:summary="Przypominaj o MMSach"
+            android:title="Nieodebrane MMS" >
+        </CheckBoxPreference>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Indywidualne ustawienia" >
+        <Preference
+            android:name="add_numbers"
+            android:key="call_sett"
+            android:summary="Ustawienia vibracji, dzwięków, LED.."
+            android:title="Ustawienia połączeń" />
+        <Preference
+            android:name="add_numbers"
+            android:key="sms_sett"
+            android:summary="Ustawienia vibracji, dzwięków, LED.."
+            android:title="Ustawienia SMS/MMS" />
+    </PreferenceCategory>
+<!--     <PreferenceCategory android:title="Wspólne ustawienia" >
+        <ListPreference
+            android:defaultValue="500"
+            android:entries="@array/duration"
+            android:entryValues="@array/eduration"
+            android:key="listDuration"
+            android:summary="Długość każdego przypomnienia"
+            android:title="Długość przypomnienia" >
+        </ListPreference>
+        <ListPreference
+            android:defaultValue="10000"
+            android:entries="@array/intervals"
+            android:entryValues="@array/eintervals"
+            android:key="listIntervals"
+            android:summary="Czas między przypomnieniami"
+            android:title="Cykliczność przypomnień" >
+        </ListPreference>
+        <ListPreference
+            android:defaultValue="0"
+            android:entries="@array/maxtime"
+            android:entryValues="@array/emaxtime"
+            android:key="listMaxtime"
+            android:summary="Nie przypominaj dłużej niż.."
+            android:title="Max. czas powiadamiania" >
+        </ListPreference>
+    </PreferenceCategory> -->
+    <!--
+     <PreferenceCategory
+                android:title="O programie">
+     
+        <Preference
+            	android:key="website"
+                android:summary="http://www.kpmapps.com"
+                android:title="Informacja o aplikacji"
+                 />
+
+    </PreferenceCategory>
+    -->
+
+</PreferenceScreen>
