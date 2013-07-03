@@ -1,33 +1,41 @@
 package isa.missedcallreminder;
 
+import static android.provider.BaseColumns._ID;
+import static isa.missedcallreminder.db.Const.ID;
+import static isa.missedcallreminder.db.Const.NAZWA;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI;
+import static isa.missedcallreminder.db.Const.NUMER;
+import isa.missedcallreminder.db.DbManager;
+
 import java.util.ArrayList;
 
 import android.app.ListActivity;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
-import android.support.v4.widget.SimpleCursorAdapter;
-import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-public class FilteredNumbers extends ListActivity {
+public class FilteredNumbers extends ListActivity implements OnClickListener {
 
 	private ListView lv = null;
 	private Cursor cursor = null;
-	private int idCol = -1;
-	private int nameCol = -1;
-	private int notesCol = -1;
 	ArrayAdapter<String> adapter;
 	ArrayList<String> arrayList;
 	ArrayList<Contact> contacts;
+	ArrayList<String> idArray;
+	DbManager dbManager;
+	String id;
+	String nazwa;
+	String numer;
+	boolean check = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,33 +44,22 @@ public class FilteredNumbers extends ListActivity {
 		setContentView(R.layout.filtered_numbers);
 		lv = getListView();
 
+		dbManager = new DbManager(getApplicationContext());
+
+		pokazZdarzenia();
+
 		Button readyBtn = (Button) findViewById(R.id.filtered_numbersBtn);
 		Button allBtn = (Button) findViewById(R.id.filtered_numbers_allBtn);
 		readyBtn.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				int count = lv.getCount();
-				SparseBooleanArray itemViews = lv.getCheckedItemPositions();
-				for (int i = 0; i < count; i++) {
-					if (itemViews.get(i)) {
-						String name = contacts.get(i).getName();
-						String number = contacts.get(i).getNumber();
-						Toast.makeText(getApplicationContext(),name + "\n" + number + "\n" + i, Toast.LENGTH_SHORT).show();
-					}
-				}
+
+				new Watek();
+				finish();
 			}
 		});
-		
-		allBtn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-					for (int i = 0; i < lv.getCount(); i++) {
-						lv.setItemChecked(i, true);
-					}
-			}
-		});
+		allBtn.setOnClickListener(this);
 
 		cursor = getContentResolver().query(
 				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
@@ -88,7 +85,27 @@ public class FilteredNumbers extends ListActivity {
 		this.setListAdapter(adapter);
 
 		lv.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		lv.setItemChecked(1, true);
+
+		for (int i = 0; i < idArray.size(); i++) {
+			lv.setItemChecked(Integer.parseInt(idArray.get(i)), true);
+		}
+	}
+
+	private static String[] FROM = { _ID, ID, NAZWA, NUMER };
+	private static String ORDER_BY = _ID + " DESC LIMIT 1";
+
+	private void pokazZdarzenia() {
+		Cursor kursor = managedQuery(
+				Uri.parse("content://isa.missedcallreminder.db/zdarzenia"),
+				FROM, null, null, ID);
+		idArray = new ArrayList<String>();
+		while (kursor.moveToNext()) {
+			long idd = kursor.getLong(0);
+			idArray.add(kursor.getString(1));
+			nazwa = kursor.getString(2);
+			numer = kursor.getString(3);
+
+		}
 	}
 
 	class Contact {
@@ -110,6 +127,42 @@ public class FilteredNumbers extends ListActivity {
 		}
 	}
 
+	class Watek implements Runnable {
+		Thread t;
+
+		public Watek() {
+
+			t = new Thread(this);
+			t.start();
+		}
+
+		@Override
+		public void run() {
+			dbManager.deleteTable(NAZWA_TABELI);
+			int count = lv.getCount();
+			SparseBooleanArray itemViews = lv.getCheckedItemPositions();
+			for (int i = 0; i < count; i++) {
+				if (itemViews.get(i)) {
+					String name = contacts.get(i).getName();
+					String number = contacts.get(i).getNumber();
+
+					String[] temp;
+					String delimiter = "-";
+					temp = number.replaceAll("\\s", "").split(delimiter);
+					StringBuilder sb = new StringBuilder();
+					for (int ii = 0; ii < temp.length; ii++) {
+						sb.append(temp[ii]);
+					}
+					if (sb.length() >= 9) {
+						dbManager.dodajZdarzenie("" + i, name,
+								sb.substring(sb.length() - 9));
+					}
+				}
+			}
+		}
+
+	}
+
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		// TODO Auto-generated method stub
@@ -120,17 +173,21 @@ public class FilteredNumbers extends ListActivity {
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putBoolean("checkbox_" + position, true);
 		editor.commit();
+	}
 
-		// SparseBooleanArray itemViews = lv.getCheckedItemPositions();
-		// if(itemViews.get(position)){
-		//
-		//
-		// Toast.makeText(getApplicationContext(), "true",
-		// Toast.LENGTH_SHORT).show();
-		// }
-		// else{
-		// Toast.makeText(getApplicationContext(), "false",
-		// Toast.LENGTH_SHORT).show();
-		// }
+	@Override
+	public void onClick(View arg0) {
+		if (!check) {
+			for (int i = 0; i < lv.getCount(); i++) {
+				lv.setItemChecked(i, true);
+			}
+			check = true;
+		} else {
+			for (int i = 0; i < lv.getCount(); i++) {
+				lv.setItemChecked(i, false);
+			}
+			check = false;
+		}
+
 	}
 }

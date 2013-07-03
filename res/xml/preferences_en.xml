@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" 
+
+            	android:title="Missed Call Reminder">
+            
+        <PreferenceCategory
+                android:title="Application">
+     
+              <CheckBoxPreference 
+	            android:summary="Set application active" 
+	            android:title="Active application"
+		        android:key="autostart" 
+		        android:defaultValue="true"></CheckBoxPreference>
+
+     </PreferenceCategory>
+     
+     <PreferenceCategory
+                android:title="Defined numbers">
+     
+        <Preference
+            	android:key="editTextPref"
+                android:name="add_numbers"
+                android:summary="Defined numbers"
+                android:title="Define new numbers"
+                 />
+
+    </PreferenceCategory>
+                
+     <PreferenceCategory                 
+        		android:title="On/Off Reminder">
+         
+             <CheckBoxPreference 
+	            android:summary="Enable MCR" 
+	            android:title="Missed Call"
+		        android:key="missCallCheck" 
+		        android:defaultValue="true"></CheckBoxPreference>
+             <CheckBoxPreference 
+	            android:summary="Enable MCR" 
+	            android:title="Unread SMS"
+		        android:key="missSMSCheck" 
+		        android:defaultValue="true"></CheckBoxPreference>
+             <CheckBoxPreference 
+	            android:summary="Enable MCR" 
+	            android:title="Unread MMS"
+		        android:key="missMMSCheck" 
+		        android:defaultValue="true"></CheckBoxPreference>
+     </PreferenceCategory>
+     <PreferenceCategory 
+				android:title="Individual Preferences">
+                <Preference
+            	android:key="call_sett"
+                android:name="add_numbers"
+                android:summary="Setting vibration, tone, LED.."
+                android:title="Call reminder settings"
+                 />
+                <Preference
+            	android:key="sms_sett"
+                android:name="add_numbers"
+                android:summary="Setting vibration, tone, LED.."
+                android:title="SMS/MMS reminder settings"
+                 />
+     
+
+         
+     </PreferenceCategory>
+     <PreferenceCategory 
+				android:title="Common Preferences" >
+
+     		  <ListPreference
+     		    android:entries="@array/duration"
+     		    android:key="listDuration"
+     		    android:entryValues="@array/eduration"
+                android:title="Reminder Duration"
+                android:summary="Time for each notification"
+                android:defaultValue="500"></ListPreference>
+     		  <ListPreference 
+     		    android:entries="@array/intervals"
+     		    android:key="listIntervals"
+     		    android:entryValues="@array/eintervals"
+                android:title="Reminder Interval"
+                android:summary="Time between each notification"
+                android:defaultValue="10000"></ListPreference>
+     		  <ListPreference
+     		    android:key="listMaxtime"
+     		    android:entries="@array/maxtime_en"
+     		    android:entryValues="@array/emaxtime_en"
+                android:title="Max Time"
+                android:summary="Don't remind event older than max"
+                android:defaultValue="0"></ListPreference>    		         		         		    
+     </PreferenceCategory>
+     
+     <PreferenceCategory
+                android:title="About Application">
+     
+        <Preference
+            	android:key="website"
+                android:summary="http://www.kpmapps.com"
+                android:title="Information"
+                 />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

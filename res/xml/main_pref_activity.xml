@@ -30,12 +30,12 @@
             android:summary="Przypominaj o SMSach"
             android:title="Nieodebrane SMS" >
         </CheckBoxPreference>
-        <CheckBoxPreference
+<!--         <CheckBoxPreference
             android:defaultValue="true"
             android:key="missMMSCheck"
             android:summary="Przypominaj o MMSach"
             android:title="Nieodebrane MMS" >
-        </CheckBoxPreference>
+        </CheckBoxPreference> -->
     </PreferenceCategory>
     <PreferenceCategory android:title="Indywidualne ustawienia" >
         <Preference
@@ -49,7 +49,7 @@
             android:summary="Ustawienia vibracji, dzwięków, LED.."
             android:title="Ustawienia SMS/MMS" />
     </PreferenceCategory>
-<!--     <PreferenceCategory android:title="Wspólne ustawienia" >
+<PreferenceCategory android:title="Wspólne ustawienia" >
         <ListPreference
             android:defaultValue="500"
             android:entries="@array/duration"
@@ -74,7 +74,7 @@
             android:summary="Nie przypominaj dłużej niż.."
             android:title="Max. czas powiadamiania" >
         </ListPreference>
-    </PreferenceCategory> -->
+    </PreferenceCategory>
     <!--
      <PreferenceCategory
                 android:title="O programie">

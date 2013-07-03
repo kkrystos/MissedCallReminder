@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array 
+        name="duration">       
+        <item>0,5 sec</item>
+        <item>1 sec</item>
+	    <item>2 sec</item>
+	    <item>3 sec</item>
+	    <item>5 sec</item>
+	    <item>10 sec</item>
+	    <item>15 sec</item>
+	    <item>20 sec</item>
+	    <item>30 sec</item>
+    </string-array>
+    <string-array 
+        name="eduration">       
+        <item>500</item>
+        <item>1000</item>
+	    <item>2000</item>
+	    <item>3000</item>
+	    <item>5000</item>
+	    <item>10000</item>
+	    <item>15000</item>
+	    <item>20000</item>
+	    <item>30000</item>
+	    </string-array>
+	     <string-array 
+        name="intervals">       
+        <item>10 sec </item>
+        <item>1 min </item>
+        <item>2 min</item>
+	    <item>3 min</item>
+	    <item>4 min</item>
+	    <item>5 min</item>
+	    <item>10 min</item>
+	    <item>15 min</item>
+	    <item>30 min</item>
+	    <item>60 min</item>
+    </string-array>
+    <string-array 
+        name="eintervals">       
+        <item>10000</item>
+        <item>60000</item>
+        <item>120000</item>
+	    <item>180000</item>
+	    <item>240000</item>
+	    <item>300000</item>
+	    <item>600000</item>
+	    <item>900000</item>
+	    <item>1800000</item>
+	    <item>3600000</item>
+	    </string-array>
+	     <string-array 
+        name="maxtime">       
+        <item>bez limitu</item>
+        <item>30 sec</item>
+        <item>60 sec</item>
+        <item>15 min</item>
+        <item>30 min</item>
+	    <item>60 min</item>
+	    <item>2 h</item>
+	    <item>3 h</item>
+	    <item>5 h</item>
+	    <item>12 h</item>
+	    <item>24 h</item>
+	    <item>48 h</item>
+    </string-array>
+    <string-array 
+        name="emaxtime">       
+        <item>0</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>900000</item>
+        <item>1800000</item>
+	    <item>3600000</item>
+	    <item>7200000</item>
+	    <item>10800000</item>
+	    <item>18000000</item>
+	    <item>43200000</item>
+	    <item>86400000</item>
+	    <item>172800000</item>
+	    </string-array>
+	     <string-array 
+        name="maxtime_en">       
+        <item>no limit</item>
+        <item>30 sec</item>
+        <item>60 sec</item>
+        <item>15 min</item>
+        <item>30 min</item>
+	    <item>60 min</item>
+	    <item>2 h</item>
+	    <item>3 h</item>
+	    <item>5 h</item>
+	    <item>12 h</item>
+	    <item>24 h</item>
+	    <item>48 h</item>
+    </string-array>
+    <string-array 
+        name="emaxtime_en">       
+        <item>0</item>
+        <item>30000</item>
+        <item>60000</item>
+        <item>900000</item>
+        <item>1800000</item>
+	    <item>3600000</item>
+	    <item>7200000</item>
+	    <item>10800000</item>
+	    <item>18000000</item>
+	    <item>43200000</item>
+	    <item>86400000</item>
+	    <item>172800000</item>
+	    </string-array>
+	    
+     <string-array 
+        name="led">       
+        <item>biały</item>
+        <item>zielony</item>
+	    <item>czerwony</item>
+	    <item>niebieski</item>
+    </string-array>
+    <string-array 
+        name="eled">       
+        <item>0</item>
+        <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    </string-array>
+	    <string-array 
+        name="led_en">       
+        <item>white</item>
+        <item>green</item>
+	    <item>red</item>
+	    <item>blue</item>
+    </string-array>
+    <string-array 
+        name="eled_en">       
+        <item>0</item>
+        <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    </string-array>
+</resources>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <RingtonePreference
+    android:key="ring_tone_preff"
+    android:title="Reminder tone"
+    android:ringtoneType="notification"
+    android:summary="Select or disable reminder tone" />
+    <ListPreference
+    android:key="led_preff"
+    android:title="LED color"
+    android:summary="Select or disable LED indicator"
+    android:entries="@array/led_en"
+    android:entryValues="@array/eled_en"
+    android:defaultValue="0" />
+    <CheckBoxPreference 
+    android:key="check_vibrate_preff"
+    android:title="Vibration"
+    android:defaultValue="true"
+    android:summary="On/Off vibrate reminding" />
+    <CheckBoxPreference 
+    android:key="check_screen_on_preff"
+    android:title="Screen On"
+    android:defaultValue="false"
+    android:summary="On/Off screen on reminding" />
+    
+
+</PreferenceScreen>
