@@ -3,7 +3,6 @@ package isa.missedcallreminder;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.Notification.Builder;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -12,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,6 +20,7 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -48,7 +49,7 @@ public class NotificationsActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// SharedPreferences
 		SharedPreferences getPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
@@ -64,21 +65,26 @@ public class NotificationsActivity extends Activity {
 				"DEFAULT_SOUND");
 		isVibrate = getPrefs.getBoolean("check_vibrate_preff", true);
 		isScreenOn = getPrefs.getBoolean("check_screen_on_preff", false);
-		
+
+		Toast.makeText(getApplicationContext(), strRingtonePreference, 0)
+				.show();
+		Log.i("sound", strRingtonePreference);
 
 		if (isScreenOn) {
-			((PowerManager)getSystemService(POWER_SERVICE)).newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG").acquire();
-			this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN
+			((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
+					PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG").acquire();
+			this.getWindow().setFlags(
+					WindowManager.LayoutParams.FLAG_FULLSCREEN
 							| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
-							| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,WindowManager.LayoutParams.FLAG_FULLSCREEN
+							| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN
 							| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
 							| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-			
 
 		}
-		
-//		setContentView(R.layout.notification);
-		
+
+		// setContentView(R.layout.notification);
+
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		Bundle bundle = getIntent().getExtras();
@@ -95,25 +101,30 @@ public class NotificationsActivity extends Activity {
 
 		// Intents and PendingsIntents
 		// Start this.activity
-		Intent hideIntent = new Intent(getApplicationContext(), HideNotification.class);
+		Intent hideIntent = new Intent(getApplicationContext(),
+				HideNotification.class);
 		hideIntent.putExtra("isCall", false);
 		hideIntent.putExtra("isSMS", false);
 		hideIntent.putExtra("lastCallnumber", "numer");
-		PendingIntent hidePendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, hideIntent, PendingIntent.FLAG_UPDATE_CURRENT );
+		PendingIntent hidePendingIntent = PendingIntent.getActivity(
+				getApplicationContext(), 0, hideIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		// call
 		Intent callIntent = new Intent(this, HideNotification.class);
 		callIntent.putExtra("isCall", true);
 		callIntent.putExtra("isSMS", false);
 		callIntent.putExtra("lastCallnumber", lastCallnumber);
 		PendingIntent pendingIntentCall = PendingIntent.getActivity(
-				getApplicationContext(), 1, callIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				getApplicationContext(), 1, callIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 		// sms
 		Intent smsIntent = new Intent(this, HideNotification.class);
 		smsIntent.putExtra("isSMS", true);
 		smsIntent.putExtra("isCall", false);
 		smsIntent.putExtra("lastCallnumber", lastCallnumber);
 		PendingIntent pendingIntentSMS = PendingIntent.getActivity(
-				getApplicationContext(), 2, smsIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+				getApplicationContext(), 2, smsIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		// check version of android and do stuff
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
@@ -126,7 +137,7 @@ public class NotificationsActivity extends Activity {
 					.setTicker(lastCallnumber)
 					.setWhen(System.currentTimeMillis())
 					.setContentTitle("Nieodebrano")
-					.setContentText(lastName + " "+ lastCallnumber)
+					.setContentText(lastName + " " + lastCallnumber)
 					.setContentIntent(hidePendingIntent)
 					.addAction(android.R.drawable.ic_menu_camera, "Call",
 							pendingIntentCall)
@@ -135,7 +146,12 @@ public class NotificationsActivity extends Activity {
 			if (isVibrate) {
 				noti.setVibrate(new long[] { 0, ivalues });
 			}
-			noti.setSound(Uri.parse(strRingtonePreference), AudioManager.STREAM_NOTIFICATION);
+			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
+				noti.setSound(Uri.parse("content://settings/system/notification_sound"),
+						AudioManager.STREAM_NOTIFICATION);
+			} else {
+				noti.setSound(Uri.parse(strRingtonePreference),AudioManager.STREAM_NOTIFICATION);
+			}
 
 			nm.notify(1, noti.build());
 		} else {
@@ -177,7 +193,6 @@ public class NotificationsActivity extends Activity {
 		// n.ledOnMS = 1000;
 		// n.ledOffMS = 1000;
 		//
-
 
 		if (isScreenOn == true) {
 			new Handler().postDelayed(new Runnable() {
