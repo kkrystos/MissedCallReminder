@@ -29,6 +29,7 @@
                 android:layout_marginLeft="15dp"
                 android:text="Add contacts"
                 android:textSize="22dp"
+                android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
@@ -38,6 +39,7 @@
                 android:layout_gravity="left"
                 android:layout_marginLeft="15dp"
                 android:text="Add contacts"
+                                android:textColor="#000000"
                 android:textSize="12dp"
                 android:textStyle="bold" />
         </LinearLayout>

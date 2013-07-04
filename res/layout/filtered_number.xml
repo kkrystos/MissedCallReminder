@@ -17,12 +17,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <CheckBox
-            android:id="@+id/filtered_number_allCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filtruj wszystkie" />
-
         <Button
             android:id="@+id/filtered_numberAddBtn"
             android:layout_width="match_parent"

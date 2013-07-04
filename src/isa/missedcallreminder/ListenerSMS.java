@@ -28,6 +28,7 @@ public class ListenerSMS extends BroadcastReceiver {
 	private String intervals;
 	private int ivalues;
 	private int iintervals;
+	boolean hasCheckPref = true;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -41,6 +42,7 @@ public class ListenerSMS extends BroadcastReceiver {
 		ivalues = Integer.parseInt(values);
 		intervals = getPrefs.getString("listIntervals", "10000");
 		iintervals = Integer.parseInt(intervals);
+		hasCheckPref = getPrefs.getBoolean("filtered_checkbox", true);
 
 		if (intent != null
 				&& intent.getAction() != null
@@ -56,13 +58,12 @@ public class ListenerSMS extends BroadcastReceiver {
 			if (smsNumber.length() >= 9) {
 				smsNumberSub = smsNumber.substring(smsNumber.length() - 9);
 			}
+			if (!hasCheckPref) {
+				kursor = context.getContentResolver().query(TRESC_URI, FROM,
+						NUMER + "='" + smsNumberSub + "'", null, null);
+				pokazZdarzenia(kursor);
 
-			kursor = context.getContentResolver().query(TRESC_URI, FROM,
-					NUMER + "='" + smsNumberSub + "'", null, null);
-			pokazZdarzenia(kursor);
-
-			if (numerDB != null) {
-				if (numerDB.length() != 0) {
+				if (numerDB != null && numerDB.length() != 0) {
 					Intent i = new Intent(context,
 							NotificationSmsActivity.class);
 					i.putExtra("smsNumberSub", smsNumberSub);
@@ -79,8 +80,20 @@ public class ListenerSMS extends BroadcastReceiver {
 							Toast.LENGTH_SHORT).show();
 					numerDB = "";
 				}
+			} else if (hasCheckPref) {
+				Intent i = new Intent(context, NotificationSmsActivity.class);
+				i.putExtra("smsNumberSub", smsNumberSub);
+				i.putExtra("smsName", smsName);
+				i.putExtra("smsBody", smsName);
+				PendingIntent pi = PendingIntent.getActivity(context, 0, i,
+						PendingIntent.FLAG_CANCEL_CURRENT);
+				am.setRepeating(AlarmManager.RTC_WAKEUP,
+						System.currentTimeMillis() + 1000, iintervals, pi);
+				Toast.makeText(
+						context,
+						"SMS: " + "from: \n" + smsNumberSub + "\n" + smsName
+								+ "\n" + smsBody, Toast.LENGTH_SHORT).show();
 			}
-
 		}
 	}
 

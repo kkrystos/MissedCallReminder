@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.PowerManager.WakeLock;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
+import android.widget.CheckBox;
 import android.widget.Toast;
 
 public class ServiceCall extends Service {
@@ -40,6 +41,7 @@ public class ServiceCall extends Service {
 	private AlarmManager am;
 	private Intent i;
 	private PendingIntent pi;
+	boolean hasCheckPref = true;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -54,7 +56,6 @@ public class ServiceCall extends Service {
 		getApplicationContext().getContentResolver().registerContentObserver(
 				Calls.CONTENT_URI, true, mcco);
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
 	}
 
 	@Override
@@ -80,6 +81,7 @@ public class ServiceCall extends Service {
 			ivalues = Integer.parseInt(values);
 			intervals = getPrefs.getString("listIntervals", "10000");
 			iintervals = Integer.parseInt(intervals);
+			hasCheckPref = getPrefs.getBoolean("filtered_checkbox", true);
 
 			final String[] projection = null;
 			final String selection = null;
@@ -101,14 +103,13 @@ public class ServiceCall extends Service {
 				lastCallnumber = cur.getString(0);
 				lastName = cur.getString(1);
 
-				kursor = getContentResolver().query(
-						TRESC_URI,
-						FROM,
-						NUMER
-								+ "='"
-								+ lastCallnumber.substring(lastCallnumber
-										.length() - 9) + "'", null, null);
-				pokazZdarzenia(kursor);
+				if (!hasCheckPref) {
+					kursor = getContentResolver().query(TRESC_URI,FROM,NUMER+ "='"+ lastCallnumber.substring(lastCallnumber
+							.length() - 9) + "'", null, null);
+					pokazZdarzenia(kursor);
+				}
+
+				
 				cursor.moveToFirst();
 				String callLogID = cursor.getString(cursor
 						.getColumnIndex(android.provider.CallLog.Calls._ID));
@@ -143,22 +144,35 @@ public class ServiceCall extends Service {
 				am.cancel(pi);
 			}
 
-			if (bool == true && numerDB != null) {
-				if (numerDB.length() != 0) {
-					i = new Intent(getApplicationContext(),
-							NotificationsActivity.class);
-					i.putExtra("lastCallnumber", lastCallnumber);
-					i.putExtra("lastName", lastName);
-					pi = PendingIntent.getActivity(getApplicationContext(), 0,
-							i, PendingIntent.FLAG_CANCEL_CURRENT);
-					Toast.makeText(getApplicationContext(),
-							"Nieodebrano : " + lastCallnumber,
-							Toast.LENGTH_SHORT).show();
-					am.setRepeating(AlarmManager.RTC_WAKEUP,
-							System.currentTimeMillis() + 1000, iintervals, pi);
-					bool = false;
-					numerDB = "";
+			if (!hasCheckPref && bool == true) {
+				if (numerDB != null && numerDB.length() != 0) {
+						i = new Intent(getApplicationContext(),
+								NotificationsActivity.class);
+						i.putExtra("lastCallnumber", lastCallnumber);
+						i.putExtra("lastName", lastName);
+						pi = PendingIntent.getActivity(getApplicationContext(), 0,
+								i, PendingIntent.FLAG_CANCEL_CURRENT);
+						Toast.makeText(getApplicationContext(),
+								"Nieodebrano : " + lastCallnumber,
+								Toast.LENGTH_SHORT).show();
+						am.setRepeating(AlarmManager.RTC_WAKEUP,
+								System.currentTimeMillis() + 1000, iintervals, pi);
+						bool = false;
+						numerDB = "";
 				}
+			}else if (hasCheckPref) {
+				i = new Intent(getApplicationContext(),
+						NotificationsActivity.class);
+				i.putExtra("lastCallnumber", lastCallnumber);
+				i.putExtra("lastName", lastName);
+				pi = PendingIntent.getActivity(getApplicationContext(), 0,
+						i, PendingIntent.FLAG_CANCEL_CURRENT);
+				Toast.makeText(getApplicationContext(),
+						"Nieodebrano : " + lastCallnumber,
+						Toast.LENGTH_SHORT).show();
+				am.setRepeating(AlarmManager.RTC_WAKEUP,
+						System.currentTimeMillis() + 1000, iintervals, pi);
+				bool = false;
 			}
 		}
 	}
