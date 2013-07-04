@@ -66,8 +66,8 @@ public class NotificationsActivity extends Activity {
 		isVibrate = getPrefs.getBoolean("check_vibrate_preff", true);
 		isScreenOn = getPrefs.getBoolean("check_screen_on_preff", false);
 
-		Toast.makeText(getApplicationContext(), strRingtonePreference, 0)
-				.show();
+//		Toast.makeText(getApplicationContext(), strRingtonePreference, 0)
+//				.show();
 		Log.i("sound", strRingtonePreference);
 
 		if (isScreenOn) {
@@ -91,8 +91,8 @@ public class NotificationsActivity extends Activity {
 		lastCallnumber = bundle.getString("lastCallnumber");
 		lastName = bundle.getString("lastName");
 
-		Toast.makeText(getApplicationContext(),
-				bundle.getString("lastCallnumber"), 0).show();
+//		Toast.makeText(getApplicationContext(),
+//				bundle.getString("lastCallnumber"), 0).show();
 
 		// Own alarmManager off
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

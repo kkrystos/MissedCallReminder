@@ -66,7 +66,7 @@ public class HideNotification extends Activity {
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		i = new Intent(this, NotificationsActivity.class);
 		pi = PendingIntent.getActivity(this, 0, i, 0);
-		ii = new Intent(this, NotificationsActivity.class);
+		ii = new Intent(this, NotificationSmsActivity.class);
 		pii = PendingIntent.getActivity(this, 0, ii, 0);
 		am.cancel(pi);
 		am.cancel(pii);

@@ -45,8 +45,16 @@
             android:name="isa.missedcallreminder.FilteredNumbers"
             android:screenOrientation="portrait" >
         </activity>
+                <activity
+            android:name="isa.missedcallreminder.FilteredNumber"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="isa.missedcallreminder.NotificationsActivity"
+            android:theme="@android:style/Theme.Wallpaper" >
+        </activity>
+        <activity
+            android:name="isa.missedcallreminder.NotificationSmsActivity"
             android:theme="@android:style/Theme.Wallpaper" >
         </activity>
         <activity android:name=".IndividualPreferenceActivity" >

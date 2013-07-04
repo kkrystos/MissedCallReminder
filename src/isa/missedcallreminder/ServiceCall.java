@@ -50,24 +50,15 @@ public class ServiceCall extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-
-		// myToast = Toast.makeText(getApplicationContext(),
-		// "CallService uruchomiony",
-		// Toast.LENGTH_SHORT);
-		// myToast.show();
-
 		mcco = new MissedCallsContentObserver(new Handler());
 		getApplicationContext().getContentResolver().registerContentObserver(
 				Calls.CONTENT_URI, true, mcco);
-
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
 	}
 
 	@Override
 	public void onDestroy() {
-		// myToast.setText("CallService zatrzymany");
-		// myToast.show();
 		getApplicationContext().getContentResolver().unregisterContentObserver(
 				mcco);
 		super.onDestroy();
@@ -102,7 +93,8 @@ public class ServiceCall extends Service {
 				cursor = getContentResolver().query(
 						Uri.parse("content://call_log/calls"), projection,
 						selection, selectionArgs, sortOrder);
-				String[] projectionn = new String[] { Calls.NUMBER , Calls.CACHED_NAME};
+				String[] projectionn = new String[] { Calls.NUMBER,
+						Calls.CACHED_NAME };
 				cur = getContentResolver().query(Calls.CONTENT_URI,
 						projectionn, null, null, Calls.DATE + " desc");
 				cur.moveToFirst();
@@ -135,9 +127,16 @@ public class ServiceCall extends Service {
 
 			} catch (Exception ex) {
 			} finally {
-				cursor.close();
-				cur.close();
-				kursor.close();
+				if (cursor != null) {
+					cursor.close();
+				}
+				if (cur != null) {
+					cur.close();
+				}
+				if (kursor != null) {
+					kursor.close();
+				}
+
 			}
 
 			if (bool == false) {

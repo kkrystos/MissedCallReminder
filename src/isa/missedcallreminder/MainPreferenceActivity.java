@@ -97,16 +97,28 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 //					
 //					nm.notify(1, noti.build());
 //				}
-				
-			Intent	i = new Intent(getApplicationContext(), NotificationsActivity.class);
-				i.putExtra("lastCallnumber", "517515654");
-				i.putExtra("lastName", "kamciaks");
-				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
+				//call oks
+//			Intent	i = new Intent(getApplicationContext(), NotificationsActivity.class);
+//				i.putExtra("lastCallnumber", "517515654");
+//				i.putExtra("lastName", "kamciaks");
+//				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
+//						i, PendingIntent.FLAG_CANCEL_CURRENT);
+//				Toast.makeText(getApplicationContext(),
+//						"Nieodebrano : " + 517515654,
+//						Toast.LENGTH_SHORT).show();
+//				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//				am.setRepeating(AlarmManager.RTC_WAKEUP,
+//						System.currentTimeMillis() + 1000, 15000, pi);
+				//sms ?
+				Intent	i = new Intent(getApplicationContext(), NotificationSmsActivity.class);
+				i.putExtra("smsNumberSub", "517515654");
+//				i.putExtra("lastName", "kamciaks");
+				pi = PendingIntent.getActivity(getApplicationContext(), 0,
 						i, PendingIntent.FLAG_CANCEL_CURRENT);
 				Toast.makeText(getApplicationContext(),
 						"Nieodebrano : " + 517515654,
 						Toast.LENGTH_SHORT).show();
-				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis() + 1000, 15000, pi);
 			}
@@ -220,7 +232,7 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 	}
 
 	public boolean onPreferenceClick(Preference preference) {
-		Intent i = new Intent(this, FilteredNumbers.class);
+		Intent i = new Intent(this, FilteredNumber.class);
 		startActivity(i);
 		return false;
 	}

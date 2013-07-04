@@ -16,4 +16,5 @@ public interface Const extends BaseColumns {
     public static final String ID = "id" ;
     public static final String NUMER = "numer" ;
     public static final String NAZWA = "nazwa" ;
+    public static final String INITIALIZED_CHECKBOX = "initialized_checkbox" ;
 }
