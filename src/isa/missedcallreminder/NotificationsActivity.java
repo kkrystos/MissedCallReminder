@@ -3,6 +3,8 @@ package isa.missedcallreminder;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
+import android.app.Notification.Builder;
+import android.app.Notification.InboxStyle;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -22,6 +24,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.WindowManager;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 public class NotificationsActivity extends Activity {
@@ -66,8 +69,6 @@ public class NotificationsActivity extends Activity {
 		isVibrate = getPrefs.getBoolean("check_vibrate_preff", true);
 		isScreenOn = getPrefs.getBoolean("check_screen_on_preff", false);
 
-//		Toast.makeText(getApplicationContext(), strRingtonePreference, 0)
-//				.show();
 		Log.i("sound", strRingtonePreference);
 
 		if (isScreenOn) {
@@ -82,17 +83,14 @@ public class NotificationsActivity extends Activity {
 							| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 
 		}
-
-		// setContentView(R.layout.notification);
-
+		
+		setContentView(R.layout.notification);
+		
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		Bundle bundle = getIntent().getExtras();
 		lastCallnumber = bundle.getString("lastCallnumber");
 		lastName = bundle.getString("lastName");
-
-//		Toast.makeText(getApplicationContext(),
-//				bundle.getString("lastCallnumber"), 0).show();
 
 		// Own alarmManager off
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -128,81 +126,112 @@ public class NotificationsActivity extends Activity {
 
 		// check version of android and do stuff
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-			Notification.Builder noti = new Notification.Builder(
-					getApplicationContext())
-					.setLargeIcon(
-							BitmapFactory.decodeResource(getResources(),
-									R.drawable.ic_launcher))
-					.setSmallIcon(R.drawable.ic_launcher)
-					.setTicker(lastCallnumber)
-					.setWhen(System.currentTimeMillis())
-					.setContentTitle("Nieodebrano")
-					.setContentText(lastName + " " + lastCallnumber)
-					.setContentIntent(hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_camera, "Call",
-							pendingIntentCall)
-					.addAction(android.R.drawable.ic_menu_compass, "SMS",
-							pendingIntentSMS).setAutoCancel(true);
-			if (isVibrate) {
-				noti.setVibrate(new long[] { 0, ivalues });
-			}
-			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
-				noti.setSound(Uri.parse("content://settings/system/notification_sound"),
-						AudioManager.STREAM_NOTIFICATION);
-			} else {
-				noti.setSound(Uri.parse(strRingtonePreference),AudioManager.STREAM_NOTIFICATION);
-			}
+//			Notification.Builder noti = new Notification.Builder(
+//					getApplicationContext())
+//					.setLargeIcon(
+//							BitmapFactory.decodeResource(getResources(),
+//									R.drawable.ic_launcher))
+//					.setSmallIcon(R.drawable.ic_launcher)
+//					.setTicker("Nieodebrane Po³¹czenie " +lastName)
+//					.setWhen(System.currentTimeMillis())
+//					.setContentTitle("Nieodebrane Po³¹czenie")
+//					.setContentText(lastName + " " + lastCallnumber)
+//					.setContentIntent(hidePendingIntent)
+//					.addAction(android.R.drawable.sym_action_call, "Call",
+//							pendingIntentCall)
+//					.addAction(android.R.drawable.sym_action_email, "SMS",
+//							pendingIntentSMS).setAutoCancel(true);
+//			if (isVibrate) {
+//				noti.setVibrate(new long[] { 0, ivalues });
+//			}
+//			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
+//				noti.setSound(Uri
+//						.parse("content://settings/system/notification_sound"),
+//						AudioManager.STREAM_NOTIFICATION);
+//			} else {
+//				noti.setSound(Uri.parse(strRingtonePreference),
+//						AudioManager.STREAM_NOTIFICATION);
+//			}
+//			nm.notify(1, noti.build());
+			
+			
+			// Pending intent to be fired when notification is clicked
+			
 
-			nm.notify(1, noti.build());
+						RemoteViews remoteViews = new RemoteViews(getPackageName(),
+								R.layout.notification_layout);
+						Notification.Builder builder = new Notification.Builder(getApplicationContext());
+						builder.setSmallIcon(R.drawable.ic_launcher);
+						
+						remoteViews.setOnClickPendingIntent(R.id.noti_callBtn, pendingIntentCall);
+						remoteViews.setOnClickPendingIntent(R.id.noti_callTv, pendingIntentCall);
+						remoteViews.setOnClickPendingIntent(R.id.noti_smsBtn, pendingIntentSMS);
+						remoteViews.setOnClickPendingIntent(R.id.noti_smsTv, pendingIntentSMS);
+						remoteViews.setTextViewText(R.id.notification_main_txt, "Nieodebrane Po³¹czenie " +lastName);
+						builder.setContent(remoteViews);
+						builder.setWhen(System.currentTimeMillis());
+						builder.setTicker("Nieodebrane Po³¹czenie " +lastName);
+						builder.setContentIntent(hidePendingIntent);
+						builder.setAutoCancel(true);
+						builder.setStyle(new Notification.BigPictureStyle());
+						NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+						notificationManger.notify(1, builder.build());
+					
+
 		} else {
-			NotificationCompat.Builder noti = new NotificationCompat.Builder(
-					getApplicationContext())
-					.setLargeIcon(
-							BitmapFactory.decodeResource(getResources(),
-									R.drawable.ic_launcher))
-					.setSmallIcon(R.drawable.ic_launcher)
-					.setTicker("This is a notification marquee")
-					.setWhen(System.currentTimeMillis())
-					.setContentTitle("Message Title 6")
-					.setContentText(
-							"Message Content 6 will have some action buttons")
-					.setContentIntent(hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_camera, "Action 1",
-							hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_compass, "Action 2",
-							hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_info_details,
-							"Action 3", hidePendingIntent).setAutoCancel(true);
-			nm.notify(1, noti.build());
+//			NotificationCompat.Builder noti = new NotificationCompat.Builder(
+//					getApplicationContext())
+//					.setLargeIcon(
+//							BitmapFactory.decodeResource(getResources(),
+//									R.drawable.ic_launcher))
+//					.setSmallIcon(R.drawable.ic_launcher)
+//					.setTicker("Nieodebrane Po³¹czenie " +lastName)
+//					.setWhen(System.currentTimeMillis())
+//					.setContentTitle("Nieodebrane Po³¹czenie")
+//					.setContentText(lastName + " " + lastCallnumber)
+//					.setContentIntent(hidePendingIntent)
+//					.addAction(android.R.drawable.sym_action_call, "Call",
+//							pendingIntentCall)
+//					.addAction(android.R.drawable.sym_action_email, "SMS",
+//							pendingIntentSMS).setAutoCancel(true);
+//			if (isVibrate) {
+//				noti.setVibrate(new long[] { 0, ivalues });
+//			}
+//			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
+//				noti.setSound(Uri
+//						.parse("content://settings/system/notification_sound"),
+//						AudioManager.STREAM_NOTIFICATION);
+//			} else {
+//				noti.setSound(Uri.parse(strRingtonePreference),
+//						AudioManager.STREAM_NOTIFICATION);
+//			}
+//			nm.notify(1, noti.build());
+			
+			Intent intent = new Intent(this, HideNotification.class);
+			PendingIntent pendingIntent = PendingIntent.getActivity(this, 01,
+					intent, Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			RemoteViews remoteViews = new RemoteViews(getPackageName(),
+					R.layout.notification_layout);
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext());
+			builder.setSmallIcon(R.drawable.ic_launcher);
+			builder.setContent(remoteViews);
+			builder.setTicker("Notification by Chitranshu Asthana (Remote View)");
+			builder.setContentIntent(pendingIntent);
+			builder.setAutoCancel(true);
+			builder.setPriority(0);
+			Notification notification = builder.build();
+			NotificationManager notificationManger = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			notificationManger.notify(02, notification);
 		}
-
-		// if (isVibrate == true) {
-		// n.vibrate = new long[] { 0, ivalues };
-		// }
-
-		// if (iled == 0) {
-		// n.ledARGB = Color.WHITE;
-		// } else if (iled == 1) {
-		// n.ledARGB = Color.GREEN;
-		// } else if (iled == 2) {
-		// n.ledARGB = Color.RED;
-		// } else if (iled == 3) {
-		// n.ledARGB = Color.BLUE;
-		// }
-		// n.flags |= Notification.FLAG_SHOW_LIGHTS;
-		// n.ledOnMS = 1000;
-		// n.ledOffMS = 1000;
-		//
-
 		if (isScreenOn == true) {
 			new Handler().postDelayed(new Runnable() {
 				public void run() {
 
-					finish();
+//					finish();
 				}
 			}, 10);
 		} else if (isScreenOn == false) {
-			finish();
+//			finish();
 		}
 
 		if (imaxtime != 0) {

@@ -1,5 +1,9 @@
 package isa.missedcallreminder;
 
+import isa.missedcallreminder.FilteredNumbers.Contact;
+
+import java.util.ArrayList;
+
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -7,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -15,7 +20,9 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -40,6 +47,7 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 		setContentView(R.layout.activity_main);
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		Button bs = (Button) findViewById(R.id.button1);
+		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 		bs.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -98,21 +106,49 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 //					nm.notify(1, noti.build());
 //				}
 				//call oks
-//			Intent	i = new Intent(getApplicationContext(), NotificationsActivity.class);
+			Intent	i = new Intent(getApplicationContext(), NotificationListActivity.class);
+			startActivity(i);
 //				i.putExtra("lastCallnumber", "517515654");
-//				i.putExtra("lastName", "kamciaks");
+//				i.putExtra("lastName", "Kamciaks");
 //				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,
 //						i, PendingIntent.FLAG_CANCEL_CURRENT);
 //				Toast.makeText(getApplicationContext(),
 //						"Nieodebrano : " + 517515654,
 //						Toast.LENGTH_SHORT).show();
-//				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//				
 //				am.setRepeating(AlarmManager.RTC_WAKEUP,
 //						System.currentTimeMillis() + 1000, 15000, pi);
 				//sms ?
+//				Intent	i = new Intent(getApplicationContext(), NotificationSmsActivity.class);
+//				i.putExtra("smsNumberSub", "517515654");
+//				i.putExtra("smsName", "kamciaks");
+//				i.putExtra("smsBody", "dupa jasiu");
+//				pi = PendingIntent.getActivity(getApplicationContext(), 0,
+//						i, PendingIntent.FLAG_CANCEL_CURRENT);
+//				Toast.makeText(getApplicationContext(),
+//						"Nieodebrano : " + 517515654,
+//						Toast.LENGTH_SHORT).show();
+//				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//				am.setRepeating(AlarmManager.RTC_WAKEUP,
+//						System.currentTimeMillis() + 1000, 15000, pi);
+					
+				
+				
+			}
+		});
+		
+		
+		
+		Button bst = (Button) findViewById(R.id.button2);
+		bst.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+//				am.cancel(pi);
 				Intent	i = new Intent(getApplicationContext(), NotificationSmsActivity.class);
 				i.putExtra("smsNumberSub", "517515654");
-//				i.putExtra("lastName", "kamciaks");
+				i.putExtra("smsName", "Kamciaks");
+				i.putExtra("smsBody", "Hej co tam u Ciebie?");
 				pi = PendingIntent.getActivity(getApplicationContext(), 0,
 						i, PendingIntent.FLAG_CANCEL_CURRENT);
 				Toast.makeText(getApplicationContext(),
@@ -121,15 +157,6 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis() + 1000, 15000, pi);
-			}
-		});
-		
-		Button bst = (Button) findViewById(R.id.button2);
-		bst.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				am.cancel(pi);
 			}
 		});
 		

@@ -153,14 +153,15 @@ public class ServiceCall extends Service {
 						pi = PendingIntent.getActivity(getApplicationContext(), 0,
 								i, PendingIntent.FLAG_CANCEL_CURRENT);
 						Toast.makeText(getApplicationContext(),
-								"Nieodebrano : " + lastCallnumber,
+								"Nieodebrano : " + lastCallnumber+"\n"+
+						"!hasCheckPref",
 								Toast.LENGTH_SHORT).show();
 						am.setRepeating(AlarmManager.RTC_WAKEUP,
 								System.currentTimeMillis() + 1000, iintervals, pi);
 						bool = false;
 						numerDB = "";
 				}
-			}else if (hasCheckPref) {
+			}else if (hasCheckPref && bool == true) {
 				i = new Intent(getApplicationContext(),
 						NotificationsActivity.class);
 				i.putExtra("lastCallnumber", lastCallnumber);
@@ -168,7 +169,8 @@ public class ServiceCall extends Service {
 				pi = PendingIntent.getActivity(getApplicationContext(), 0,
 						i, PendingIntent.FLAG_CANCEL_CURRENT);
 				Toast.makeText(getApplicationContext(),
-						"Nieodebrano : " + lastCallnumber,
+						"Nieodebrano : " + lastCallnumber+"\n"+
+				"hasCheckPref",
 						Toast.LENGTH_SHORT).show();
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis() + 1000, iintervals, pi);

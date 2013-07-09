@@ -49,11 +49,12 @@ public class FilteredNumber extends PreferenceActivity implements
 	private static String ORDER_BY = NAZWA;
 	private static int[] DO = { R.id.nazwa, R.id.numer };
 	private String locale;
-	boolean hasCheckPref = true;
-	CheckBox checkBoxAll;
-	SharedPreferences myCheckPref;
-	ListView listView;
-	DbManager dbManager;
+	private boolean hasCheckPref = true;
+	private CheckBox checkBoxAll;
+	private SharedPreferences myCheckPref;
+	private ListView listView;
+	private DbManager dbManager;
+	private CheckBoxPreference checkboxPreference;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,12 +63,11 @@ public class FilteredNumber extends PreferenceActivity implements
 
 		myCheckPref = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
-		hasCheckPref = myCheckPref.getBoolean("filtered_checkbox", true);
-		if (hasCheckPref) {
-			Toast.makeText(getApplicationContext(), "CHECKED", 0).show();
-		} else {
-			Toast.makeText(getApplicationContext(), "UNCHECKED", 0).show();
-		}
+//		if (hasCheckPref) {
+//			Toast.makeText(getApplicationContext(), "CHECKED", 0).show();
+//		} else {
+//			Toast.makeText(getApplicationContext(), "UNCHECKED", 0).show();
+//		}
 		dbManager = new DbManager(getApplicationContext());
 		super.onCreate(savedInstanceState);
 		if (locale.equalsIgnoreCase("pl")) {
@@ -80,7 +80,7 @@ public class FilteredNumber extends PreferenceActivity implements
 		dodajNr.setOnClickListener(this);
 		Button readyBtn = (Button) findViewById(R.id.filtered_numberBtn);
 		readyBtn.setOnClickListener(this);
-		CheckBoxPreference checkboxPreference = (CheckBoxPreference) findPreference("filtered_checkbox");
+		checkboxPreference = (CheckBoxPreference) findPreference("filtered_checkbox");
 		checkboxPreference.setOnPreferenceClickListener(this);
 		listView = (ListView) findViewById(R.id.list2);
 		listView.setOnItemLongClickListener(this);
@@ -90,8 +90,12 @@ public class FilteredNumber extends PreferenceActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-
+		hasCheckPref = myCheckPref.getBoolean("filtered_checkbox", true);
 		loadContactListFromDB(listView);
+		
+		if (listView.getCount() == 0) {
+			checkboxPreference.setChecked(true);
+		}
 	}
 
 	@Override
@@ -206,16 +210,19 @@ public class FilteredNumber extends PreferenceActivity implements
 
 					String[] temp;
 					String delimiter = "-";
-					temp = phoneNrPick.split(delimiter);
+					temp = phoneNrPick.replaceAll("\\s", "").split(delimiter);
 					StringBuilder sb = new StringBuilder();
 					for (int i = 0; i < temp.length; i++) {
 						sb.append(temp[i]);
 					}
-					dodajZdarzenie(sb.substring(sb.length() - 9), contactName,
-							"");
-					Intent i = new Intent(getApplicationContext(),
-							FilteredNumber.class);
-					startActivity(i);
+					if (sb.length() >= 9) {
+						dodajZdarzenie(sb.substring(sb.length() - 9),
+								contactName, "");
+						Intent i = new Intent(getApplicationContext(),
+								FilteredNumber.class);
+						startActivity(i);
+						checkboxPreference.setChecked(false);
+					}
 				}
 				contect_resolver = null;
 				cur = null;
@@ -247,12 +254,51 @@ public class FilteredNumber extends PreferenceActivity implements
 				true);
 
 		if (hasCheckkPref) {
-			dbManager.deleteTable(NAZWA_TABELI);
-			finish();
-			Intent intent = new Intent(getApplicationContext(), FilteredNumber.class);
-			startActivity(intent);
+			checkboxPreference.setChecked(false);
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			builder.setTitle("Kasuj stworzon¹ listê")
+					.setMessage("Kasowaæ wybrane numery i filtrowaæ wszystko?")
+					.setPositiveButton("Tak",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dbManager.deleteTable(NAZWA_TABELI);
+									finish();
+									checkboxPreference.setChecked(true);
+								}
+							})
+					.setNegativeButton("Nie",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int id) {
+									dialog.cancel();
+								}
+							}).show();
+
 		} else {
-			Toast.makeText(getApplicationContext(), "UNCHECKED", 0).show();
+			if (listView.getCount() == 0) {
+				checkboxPreference.setChecked(true);
+				AlertDialog.Builder builder = new AlertDialog.Builder(this);
+				builder.setTitle("Najpierw dodaj kontakt")
+						.setMessage("Dodaæ kontakt do listy?")
+						.setPositiveButton("Tak",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										Intent intent = new Intent(
+												Intent.ACTION_PICK,
+												ContactsContract.Contacts.CONTENT_URI);
+										startActivityForResult(intent, 1);
+									}
+								})
+						.setNegativeButton("Nie",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog,
+											int id) {
+										dialog.cancel();
+									}
+								}).show();
+			}
 		}
 		return false;
 	}

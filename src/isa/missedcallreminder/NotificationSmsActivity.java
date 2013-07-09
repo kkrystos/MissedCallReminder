@@ -50,7 +50,7 @@ public class NotificationSmsActivity extends Activity {
 		// TODO Auto-generated method stub
 
 		super.onCreate(savedInstanceState);
-		
+
 		SharedPreferences getPrefs = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
 		values = getPrefs.getString("listDuration", "500");
@@ -61,10 +61,11 @@ public class NotificationSmsActivity extends Activity {
 		imaxtime = Integer.parseInt(maxtime);
 		led = getPrefs.getString("led_pref", "0");
 		iled = Integer.parseInt(led);
-		strRingtonePreference = getPrefs.getString("ring_tone_pref", "DEFAULT_SOUND");
+		strRingtonePreference = getPrefs.getString("ring_tone_pref",
+				"DEFAULT_SOUND");
 		isVibrate = getPrefs.getBoolean("check_vibrate_pref", true);
 		isScreenOn = getPrefs.getBoolean("check_screen_on_pref", false);
-		
+
 		if (isScreenOn) {
 			((PowerManager) getSystemService(POWER_SERVICE)).newWakeLock(
 					PowerManager.SCREEN_DIM_WAKE_LOCK, "TAG").acquire();
@@ -76,7 +77,7 @@ public class NotificationSmsActivity extends Activity {
 							| WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
 							| WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
 		}
-		
+
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
 		Bundle bundle = getIntent().getExtras();
@@ -84,8 +85,8 @@ public class NotificationSmsActivity extends Activity {
 		smsName = bundle.getString("smsName");
 		smsBody = bundle.getString("smsBody");
 
-//		Toast.makeText(getApplicationContext(),
-//				bundle.getString("lastCallnumber"), 0).show();
+		// Toast.makeText(getApplicationContext(),
+		// bundle.getString("lastCallnumber"), 0).show();
 
 		// Own alarmManager off
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -127,26 +128,28 @@ public class NotificationSmsActivity extends Activity {
 							BitmapFactory.decodeResource(getResources(),
 									R.drawable.ic_launcher))
 					.setSmallIcon(R.drawable.ic_launcher)
-					.setTicker(smsNumberSub)
+					.setTicker("Nieodczytany SMS " + smsName)
 					.setWhen(System.currentTimeMillis())
-					.setContentTitle("Nieodebrano")
-					.setContentText(smsName + " " + smsNumberSub + "\n "+smsBody)
+					.setContentTitle("Nieodczytany SMS")
+					.setContentText(smsName + " " + "\n " + smsBody)
 					.setContentIntent(hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_camera, "Call",
+					.addAction(android.R.drawable.sym_action_call, "Call",
 							pendingIntentCall)
-					.addAction(android.R.drawable.ic_menu_compass, "SMS",
+					.addAction(android.R.drawable.sym_action_email, "SMS",
 							pendingIntentSMS).setAutoCancel(true);
 			if (isVibrate) {
 				noti.setVibrate(new long[] { 0, ivalues });
 			}
 			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
-				noti.setSound(Uri.parse("content://settings/system/notification_sound"),
+				noti.setSound(Uri
+						.parse("content://settings/system/notification_sound"),
 						AudioManager.STREAM_NOTIFICATION);
 			} else {
-				noti.setSound(Uri.parse(strRingtonePreference),AudioManager.STREAM_NOTIFICATION);
+				noti.setSound(Uri.parse(strRingtonePreference),
+						AudioManager.STREAM_NOTIFICATION);
 			}
 
-			nm.notify(1, noti.build());
+			nm.notify(2, noti.build());
 		} else {
 			NotificationCompat.Builder noti = new NotificationCompat.Builder(
 					getApplicationContext())
@@ -154,38 +157,29 @@ public class NotificationSmsActivity extends Activity {
 							BitmapFactory.decodeResource(getResources(),
 									R.drawable.ic_launcher))
 					.setSmallIcon(R.drawable.ic_launcher)
-					.setTicker("This is a notification marquee")
+					.setTicker("Nieodczytany SMS " + smsName)
 					.setWhen(System.currentTimeMillis())
-					.setContentTitle("Message Title 6")
-					.setContentText(
-							"Message Content 6 will have some action buttons")
+					.setContentTitle("Nieodczytany SMS")
+					.setContentText(smsName + " " + "\n " + smsBody)
 					.setContentIntent(hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_camera, "Action 1",
-							hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_compass, "Action 2",
-							hidePendingIntent)
-					.addAction(android.R.drawable.ic_menu_info_details,
-							"Action 3", hidePendingIntent).setAutoCancel(true);
-			nm.notify(1, noti.build());
+					.addAction(android.R.drawable.sym_action_call, "Call",
+							pendingIntentCall)
+					.addAction(android.R.drawable.sym_action_email, "SMS",
+							pendingIntentSMS).setAutoCancel(true);
+			if (isVibrate) {
+				noti.setVibrate(new long[] { 0, ivalues });
+			}
+			if (strRingtonePreference.equalsIgnoreCase("DEFAULT_SOUND")) {
+				noti.setSound(Uri
+						.parse("content://settings/system/notification_sound"),
+						AudioManager.STREAM_NOTIFICATION);
+			} else {
+				noti.setSound(Uri.parse(strRingtonePreference),
+						AudioManager.STREAM_NOTIFICATION);
+			}
+
+			nm.notify(2, noti.build());
 		}
-
-		// if (isVibrate == true) {
-		// n.vibrate = new long[] { 0, ivalues };
-		// }
-
-		// if (iled == 0) {
-		// n.ledARGB = Color.WHITE;
-		// } else if (iled == 1) {
-		// n.ledARGB = Color.GREEN;
-		// } else if (iled == 2) {
-		// n.ledARGB = Color.RED;
-		// } else if (iled == 3) {
-		// n.ledARGB = Color.BLUE;
-		// }
-		// n.flags |= Notification.FLAG_SHOW_LIGHTS;
-		// n.ledOnMS = 1000;
-		// n.ledOffMS = 1000;
-		//
 
 		if (isScreenOn == true) {
 			new Handler().postDelayed(new Runnable() {
@@ -208,16 +202,5 @@ public class NotificationSmsActivity extends Activity {
 			}, imaxtime);
 		}
 
-	}
-
-	private void RedFlashLight() {
-		NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-		Notification notif = new Notification();
-		notif.defaults |= Notification.DEFAULT_LIGHTS;
-		notif.ledARGB = Color.BLUE;
-		notif.flags = Notification.FLAG_SHOW_LIGHTS;
-		notif.ledOnMS = 1000;
-		notif.ledOffMS = 1000;
-		nm.notify(7682, notif);
 	}
 }

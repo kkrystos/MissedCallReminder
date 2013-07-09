@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.telephony.gsm.SmsMessage;
+import android.util.Log;
 import android.widget.Toast;
 
 public class ListenerSMS extends BroadcastReceiver {
@@ -29,12 +31,13 @@ public class ListenerSMS extends BroadcastReceiver {
 	private int ivalues;
 	private int iintervals;
 	boolean hasCheckPref = true;
+	Context context;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Cursor kursor = null;
-
+		this.context = context;
 		am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		SharedPreferences getPrefs = PreferenceManager
 				.getDefaultSharedPreferences(context);
@@ -58,6 +61,7 @@ public class ListenerSMS extends BroadcastReceiver {
 			if (smsNumber.length() >= 9) {
 				smsNumberSub = smsNumber.substring(smsNumber.length() - 9);
 			}
+
 			if (!hasCheckPref) {
 				kursor = context.getContentResolver().query(TRESC_URI, FROM,
 						NUMER + "='" + smsNumberSub + "'", null, null);
@@ -83,16 +87,17 @@ public class ListenerSMS extends BroadcastReceiver {
 			} else if (hasCheckPref) {
 				Intent i = new Intent(context, NotificationSmsActivity.class);
 				i.putExtra("smsNumberSub", smsNumberSub);
-				i.putExtra("smsName", smsName);
-				i.putExtra("smsBody", smsName);
+				i.putExtra("smsName", getContactName(smsNumberSub));
+				i.putExtra("smsBody", smsBody);
 				PendingIntent pi = PendingIntent.getActivity(context, 0, i,
 						PendingIntent.FLAG_CANCEL_CURRENT);
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis() + 1000, iintervals, pi);
 				Toast.makeText(
 						context,
-						"SMS: " + "from: \n" + smsNumberSub + "\n" + smsName
-								+ "\n" + smsBody, Toast.LENGTH_SHORT).show();
+						"SMS: " + "from: \n" + smsNumberSub + "\n"
+								+ getContactName(smsNumberSub) + "\n" + smsBody,
+						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}
@@ -102,5 +107,48 @@ public class ListenerSMS extends BroadcastReceiver {
 			smsName = kursor.getString(0);
 			numerDB = kursor.getString(1);
 		}
+	}
+
+	public String convertStringNr(String nr) {
+
+		String number = "";
+		String[] temp;
+		String delimiter = "-";
+		temp = nr.replaceAll("\\s", "").split(delimiter);
+		StringBuilder sb = new StringBuilder();
+		for (int ii = 0; ii < temp.length; ii++) {
+			sb.append(temp[ii]);
+		}
+		if (sb.length() >= 9) {
+			number = sb.substring(sb.length() - 9);
+			return number;
+		} else {
+			return nr;
+		}
+	}
+
+	private String getContactName(String number) {
+		String name = "";
+		Cursor cursor = context.getContentResolver().query(
+				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
+				null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+
+		while (cursor.moveToNext()) {
+			String contactName = cursor
+					.getString(cursor
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+			String contactNumber = cursor
+					.getString(cursor
+							.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+
+			if (convertStringNr(contactNumber).equalsIgnoreCase(number)) {
+				Log.i("nr", "NR: " + convertStringNr(contactNumber) + " NAME: "
+						+ contactName);
+				name = contactName;
+				return name;
+			}
+		}
+		return number;
+
 	}
 }
