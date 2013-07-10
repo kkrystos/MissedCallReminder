@@ -1,10 +1,13 @@
 package isa.missedcallreminder;
 
 import static android.provider.BaseColumns._ID;
+
 import static isa.missedcallreminder.db.Const.NAZWA;
 import static isa.missedcallreminder.db.Const.ID;
 import static isa.missedcallreminder.db.Const.NUMER;
 import static isa.missedcallreminder.db.Const.TRESC_URI;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
+import isa.missedcallreminder.db.DbManager;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -42,6 +45,7 @@ public class ServiceCall extends Service {
 	private Intent i;
 	private PendingIntent pi;
 	boolean hasCheckPref = true;
+	DbManager dbManager;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -56,6 +60,7 @@ public class ServiceCall extends Service {
 		getApplicationContext().getContentResolver().registerContentObserver(
 				Calls.CONTENT_URI, true, mcco);
 		am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		dbManager = new DbManager(getApplicationContext());
 	}
 
 	@Override
@@ -158,6 +163,7 @@ public class ServiceCall extends Service {
 								Toast.LENGTH_SHORT).show();
 						am.setRepeating(AlarmManager.RTC_WAKEUP,
 								System.currentTimeMillis() + 1000, iintervals, pi);
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2, "", lastName, lastCallnumber);
 						bool = false;
 						numerDB = "";
 				}
@@ -174,6 +180,7 @@ public class ServiceCall extends Service {
 						Toast.LENGTH_SHORT).show();
 				am.setRepeating(AlarmManager.RTC_WAKEUP,
 						System.currentTimeMillis() + 1000, iintervals, pi);
+				dbManager.dodajZdarzenie(NAZWA_TABELI_2, "", lastName, lastCallnumber);
 				bool = false;
 			}
 		}

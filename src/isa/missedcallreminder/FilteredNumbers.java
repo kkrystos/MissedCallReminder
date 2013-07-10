@@ -1,6 +1,7 @@
 package isa.missedcallreminder;
 
 import static android.provider.BaseColumns._ID;
+
 import static isa.missedcallreminder.db.Const.ID;
 import static isa.missedcallreminder.db.Const.NAZWA;
 import static isa.missedcallreminder.db.Const.NAZWA_TABELI;
@@ -44,7 +45,7 @@ public class FilteredNumbers extends ListActivity implements OnClickListener {
 		setContentView(R.layout.filtered_numbers);
 		lv = getListView();
 
-		dbManager = new DbManager(getApplicationContext());
+		dbManager = new DbManager(getApplicationContext(), this);
 
 		pokazZdarzenia();
 
@@ -154,7 +155,7 @@ public class FilteredNumbers extends ListActivity implements OnClickListener {
 						sb.append(temp[ii]);
 					}
 					if (sb.length() >= 9) {
-						dbManager.dodajZdarzenie("" + i, name,
+						dbManager.dodajZdarzenie(NAZWA_TABELI,"" + i, name,
 								sb.substring(sb.length() - 9));
 					}
 				}

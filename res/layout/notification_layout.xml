@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/notification_main_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="76dp"
+            android:layout_height="76dp"
             android:layout_gravity="center"
             android:layout_marginLeft="5dip"
             android:src="@drawable/ic_launcher" />
@@ -44,34 +44,19 @@
 
             <Button
                 android:id="@+id/noti_callBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="112dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
-                android:background="@android:drawable/sym_action_call"
-                android:focusableInTouchMode="true"
-                android:clickable="true" />
-
-            <TextView
-                android:id="@+id/noti_callTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                                android:focusableInTouchMode="true"
-                android:text="Call" />
+                android:text="call" />
 
             <Button
                 android:id="@+id/noti_smsBtn"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="15dip"
-                android:background="@android:drawable/sym_action_email"
-                android:focusableInTouchMode="true"
-                android:clickable="true" />
-
-            <TextView
-                android:id="@+id/noti_smsTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SMS" />
+                android:text="sms"
+                
+               />
         </LinearLayout>
     </LinearLayout>
 

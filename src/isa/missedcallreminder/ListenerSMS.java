@@ -3,8 +3,10 @@ package isa.missedcallreminder;
 import static android.provider.BaseColumns._ID;
 import static isa.missedcallreminder.db.Const.ID;
 import static isa.missedcallreminder.db.Const.NAZWA;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
 import static isa.missedcallreminder.db.Const.NUMER;
 import static isa.missedcallreminder.db.Const.TRESC_URI;
+import isa.missedcallreminder.db.DbManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -32,6 +34,7 @@ public class ListenerSMS extends BroadcastReceiver {
 	private int iintervals;
 	boolean hasCheckPref = true;
 	Context context;
+	DbManager dbManager;
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -46,6 +49,7 @@ public class ListenerSMS extends BroadcastReceiver {
 		intervals = getPrefs.getString("listIntervals", "10000");
 		iintervals = Integer.parseInt(intervals);
 		hasCheckPref = getPrefs.getBoolean("filtered_checkbox", true);
+		dbManager = new DbManager(context);
 
 		if (intent != null
 				&& intent.getAction() != null
@@ -82,6 +86,7 @@ public class ListenerSMS extends BroadcastReceiver {
 							"SMS: " + "from: \n" + smsNumberSub + "\n"
 									+ smsName + "\n" + smsBody,
 							Toast.LENGTH_SHORT).show();
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2, "", smsName, smsNumberSub);
 					numerDB = "";
 				}
 			} else if (hasCheckPref) {
@@ -98,6 +103,7 @@ public class ListenerSMS extends BroadcastReceiver {
 						"SMS: " + "from: \n" + smsNumberSub + "\n"
 								+ getContactName(smsNumberSub) + "\n" + smsBody,
 						Toast.LENGTH_SHORT).show();
+				dbManager.dodajZdarzenie(NAZWA_TABELI_2, "", getContactName(smsNumberSub), smsNumberSub);
 			}
 		}
 	}

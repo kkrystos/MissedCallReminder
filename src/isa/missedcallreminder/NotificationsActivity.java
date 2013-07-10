@@ -164,9 +164,9 @@ public class NotificationsActivity extends Activity {
 						builder.setSmallIcon(R.drawable.ic_launcher);
 						
 						remoteViews.setOnClickPendingIntent(R.id.noti_callBtn, pendingIntentCall);
-						remoteViews.setOnClickPendingIntent(R.id.noti_callTv, pendingIntentCall);
+//						remoteViews.setOnClickPendingIntent(R.id.noti_callTv, pendingIntentCall);
 						remoteViews.setOnClickPendingIntent(R.id.noti_smsBtn, pendingIntentSMS);
-						remoteViews.setOnClickPendingIntent(R.id.noti_smsTv, pendingIntentSMS);
+//						remoteViews.setOnClickPendingIntent(R.id.noti_smsTv, pendingIntentSMS);
 						remoteViews.setTextViewText(R.id.notification_main_txt, "Nieodebrane Po³¹czenie " +lastName);
 						builder.setContent(remoteViews);
 						builder.setWhen(System.currentTimeMillis());

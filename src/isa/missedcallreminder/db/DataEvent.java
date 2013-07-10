@@ -3,9 +3,12 @@ package isa.missedcallreminder.db;
 
 
 import static isa.missedcallreminder.db.Const.ID;
+
 import static isa.missedcallreminder.db.Const.NAZWA;
 import static isa.missedcallreminder.db.Const.NAZWA_TABELI;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
 import static isa.missedcallreminder.db.Const.NUMER;
+import static isa.missedcallreminder.db.Const.PHOTO;
 import static android.provider.BaseColumns._ID;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,12 +28,16 @@ public class DataEvent extends SQLiteOpenHelper {
         bd.execSQL("CREATE TABLE " + NAZWA_TABELI + " (" + _ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ ID
             + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT );" );
+        bd.execSQL("CREATE TABLE " + NAZWA_TABELI_2 + " (" + _ID
+                + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ PHOTO
+                + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT );" );
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase bd, int staraWersja,
             int nowaWersja) {
         bd.execSQL("DROP TABLE IF EXISTS " + NAZWA_TABELI);
+        bd.execSQL("DROP TABLE IF EXISTS " + NAZWA_TABELI_2);
         onCreate(bd);
     }
     

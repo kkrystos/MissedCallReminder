@@ -2,7 +2,10 @@ package isa.missedcallreminder;
 
 import isa.missedcallreminder.FilteredNumbers.Contact;
 
+import isa.missedcallreminder.db.DbManager;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -39,11 +42,13 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 	private PendingIntent pii;
 	private String locale;
 	NotificationManager nm;
+	DbManager dbManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		/////////////// test z buttonami
+		dbManager = new DbManager(getApplicationContext(), this);
 		setContentView(R.layout.activity_main);
 		nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 		Button bs = (Button) findViewById(R.id.button1);
@@ -145,18 +150,24 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 			@Override
 			public void onClick(View v) {
 //				am.cancel(pi);
-				Intent	i = new Intent(getApplicationContext(), NotificationSmsActivity.class);
-				i.putExtra("smsNumberSub", "517515654");
-				i.putExtra("smsName", "Kamciaks");
-				i.putExtra("smsBody", "Hej co tam u Ciebie?");
-				pi = PendingIntent.getActivity(getApplicationContext(), 0,
-						i, PendingIntent.FLAG_CANCEL_CURRENT);
-				Toast.makeText(getApplicationContext(),
-						"Nieodebrano : " + 517515654,
-						Toast.LENGTH_SHORT).show();
-				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-				am.setRepeating(AlarmManager.RTC_WAKEUP,
-						System.currentTimeMillis() + 1000, 15000, pi);
+//				Intent	i = new Intent(getApplicationContext(), NotificationSmsActivity.class);
+//				i.putExtra("smsNumberSub", "517515654");
+//				i.putExtra("smsName", "Kamciaks");
+//				i.putExtra("smsBody", "Hej co tam u Ciebie?");
+//				pi = PendingIntent.getActivity(getApplicationContext(), 0,
+//						i, PendingIntent.FLAG_CANCEL_CURRENT);
+//				Toast.makeText(getApplicationContext(),
+//						"Nieodebrano : " + 517515654,
+//						Toast.LENGTH_SHORT).show();
+//				am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+//				am.setRepeating(AlarmManager.RTC_WAKEUP,
+//						System.currentTimeMillis() + 1000, 15000, pi);
+				
+//				Math.random();
+				
+				
+				dbManager.dodajZdarzenie(NAZWA_TABELI_2,"0", "Kamciaks" + (Math.random()*0.01) , ""+(Math.random() * 0.001));
+				Toast.makeText(getApplicationContext(), "dodalem nieodebrane", 0).show();
 			}
 		});
 		

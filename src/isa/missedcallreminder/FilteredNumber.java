@@ -68,7 +68,7 @@ public class FilteredNumber extends PreferenceActivity implements
 //		} else {
 //			Toast.makeText(getApplicationContext(), "UNCHECKED", 0).show();
 //		}
-		dbManager = new DbManager(getApplicationContext());
+		dbManager = new DbManager(getApplicationContext(), this);
 		super.onCreate(savedInstanceState);
 		if (locale.equalsIgnoreCase("pl")) {
 			setContentView(R.layout.filtered_number);
