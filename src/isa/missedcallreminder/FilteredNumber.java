@@ -207,7 +207,6 @@ public class FilteredNumber extends PreferenceActivity implements
 					if (phoneCur.moveToFirst()) {
 						contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
 						phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//						photoUri = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
 						String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
 						if (photoId != null) {
 							photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) );
@@ -227,7 +226,7 @@ public class FilteredNumber extends PreferenceActivity implements
 					}
 					if (sb.length() >= 9) {
 						if (photoUri != null) {
-							dodajZdarzenie(sb.substring(sb.length() - 9),photoUri.toString(), photoUri.toString());							
+							dodajZdarzenie(sb.substring(sb.length() - 9),contactName, photoUri.toString());							
 						}else {
 							dodajZdarzenie(sb.substring(sb.length() - 9),contactName, ""+R.drawable.ic_contact_img);
 						}

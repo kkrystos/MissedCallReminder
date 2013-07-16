@@ -65,7 +65,8 @@ public final class R {
         public static final int notification=0x7f030004;
         public static final int notification_layout=0x7f030005;
         public static final int row=0x7f030006;
-        public static final int test_activity=0x7f030007;
+        public static final int tab=0x7f030007;
+        public static final int test_activity=0x7f030008;
     }
     public static final class menu {
         public static final int activity_main=0x7f080000;

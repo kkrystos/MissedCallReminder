@@ -1,35 +1,20 @@
 package isa.missedcallreminder;
 
-import isa.missedcallreminder.FilteredNumbers.Contact;
-
 import isa.missedcallreminder.db.DbManager;
-import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
-import java.util.ArrayList;
-import java.util.Random;
-
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainPreferenceActivity extends PreferenceActivity implements
 		OnPreferenceClickListener {
@@ -190,29 +175,29 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 		Preference p = findPreference("editTextPref");
 		p.setOnPreferenceClickListener(this);
 
-		Preference pp = findPreference("call_sett");
-		pp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-			public boolean onPreferenceClick(Preference preference) {
-				Intent i = new Intent(getApplicationContext(),
-						IndividualPreferenceCallActivity.class);
-				startActivity(i);
-				return false;
-			}
-		});
-
-		Preference sp = findPreference("sms_sett");
-		sp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-			public boolean onPreferenceClick(Preference preference) {
-
-				Intent i = new Intent(getApplicationContext(),
-						IndividualPreferenceActivity.class);
-				startActivity(i);
-
-				return false;
-			}
-		});
+//		Preference pp = findPreference("call_sett");
+//		pp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//
+//			public boolean onPreferenceClick(Preference preference) {
+//				Intent i = new Intent(getApplicationContext(),
+//						IndividualPreferenceCallActivity.class);
+//				startActivity(i);
+//				return false;
+//			}
+//		});
+//
+//		Preference sp = findPreference("sms_sett");
+//		sp.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+//
+//			public boolean onPreferenceClick(Preference preference) {
+//
+//				Intent i = new Intent(getApplicationContext(),
+//						IndividualPreferenceActivity.class);
+//				startActivity(i);
+//
+//				return false;
+//			}
+//		});
 	}
 
 	@Override

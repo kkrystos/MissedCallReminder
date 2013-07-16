@@ -32,7 +32,7 @@
             android:authorities="isa.missedcallreminder.db" />
 
         <activity
-            android:name="isa.missedcallreminder.MainPreferenceActivity"
+            android:name="isa.missedcallreminder.TabsActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -62,6 +62,8 @@
         <activity android:name=".HideNotification" >
         </activity>
         <activity android:name=".IndividualPreferenceCallActivity" >
+        </activity>
+        <activity android:name=".MainPreferenceActivity" >
         </activity>
         <activity android:name=".NotificationListActivity"
             android:theme="@android:style/Theme.Wallpaper" >

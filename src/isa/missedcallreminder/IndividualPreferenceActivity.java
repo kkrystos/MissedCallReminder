@@ -2,13 +2,11 @@ package isa.missedcallreminder;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.PreferenceActivity;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.widget.Toast;
+import android.preference.PreferenceActivity;
 
 public class IndividualPreferenceActivity extends PreferenceActivity implements OnPreferenceClickListener{
     

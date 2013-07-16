@@ -11,8 +11,10 @@
 
        <ImageView
             android:id="@+id/img_contact"
-            android:layout_width="80dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="5dip"
+            android:layout_marginTop="5dip"
             android:src="@drawable/ic_launcher" /> 
 
         <LinearLayout
@@ -26,7 +28,7 @@
                 android:layout_width="225dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:text="Add contacts"
                 android:textSize="22dp"
                 android:textColor="#000000"
@@ -37,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:text="Add contacts"
                                 android:textColor="#000000"
                 android:textSize="12dp"

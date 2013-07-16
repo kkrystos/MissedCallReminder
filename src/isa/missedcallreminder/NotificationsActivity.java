@@ -1,22 +1,17 @@
 package isa.missedcallreminder;
 
-import android.app.Activity;
 import static isa.missedcallreminder.db.Const.NOTIFICATION_CALL_ID;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.Notification.Builder;
-import android.app.Notification.InboxStyle;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.AudioManager;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -25,8 +20,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.WindowManager;
-import android.widget.RemoteViews;
-import android.widget.Toast;
 
 public class NotificationsActivity extends Activity {
 

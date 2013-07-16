@@ -39,25 +39,25 @@
 	            android:title="Unread SMS"
 		        android:key="missSMSCheck" 
 		        android:defaultValue="true"></CheckBoxPreference>
-             <CheckBoxPreference 
+<!--              <CheckBoxPreference 
 	            android:summary="Enable MCR" 
 	            android:title="Unread MMS"
 		        android:key="missMMSCheck" 
-		        android:defaultValue="true"></CheckBoxPreference>
+		        android:defaultValue="true"></CheckBoxPreference> -->
      </PreferenceCategory>
      <PreferenceCategory 
 				android:title="Individual Preferences">
                 <Preference
             	android:key="call_sett"
                 android:name="add_numbers"
-                android:summary="Setting vibration, tone, LED.."
+                android:summary="Setting vibration, tone.."
                 android:title="Call reminder settings"
                  />
                 <Preference
             	android:key="sms_sett"
                 android:name="add_numbers"
-                android:summary="Setting vibration, tone, LED.."
-                android:title="SMS/MMS reminder settings"
+                android:summary="Setting vibration, tone.."
+                android:title="SMS reminder settings"
                  />
      
 
@@ -88,16 +88,5 @@
                 android:summary="Don't remind event older than max"
                 android:defaultValue="0"></ListPreference>    		         		         		    
      </PreferenceCategory>
-     
-     <PreferenceCategory
-                android:title="About Application">
-     
-        <Preference
-            	android:key="website"
-                android:summary="http://www.kpmapps.com"
-                android:title="Information"
-                 />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>

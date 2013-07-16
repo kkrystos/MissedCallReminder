@@ -1,28 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-    
+
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="missSMSCheck"
+        android:summary="Przypominaj o SMSach"
+        android:title="Nieodebrane SMS-y" >
+    </CheckBoxPreference>
+
     <RingtonePreference
-    android:key="ring_tone_pref"
-    android:title="Dzwięk powiadomienia"
-    android:ringtoneType="notification"
-    android:summary="Ustaw dzwięk powiadomienia" />
-    <ListPreference
+        android:key="ring_tone_pref"
+        android:ringtoneType="notification"
+        android:summary="Ustaw dzwięk powiadomienia"
+        android:title="Dzwięk powiadomienia" />
+    <!--
+         <ListPreference
     android:key="led_pref"
     android:title="LED kolor"
     android:summary="Ustaw kolor LED powiadomienia"
     android:entries="@array/led"
     android:entryValues="@array/eled"
     android:defaultValue="0" />
-    <CheckBoxPreference 
-    android:key="check_vibrate_pref"
-    android:title="Wibracje"
-    android:defaultValue="true"
-    android:summary="Wł./wył. wibracje" />
-    <CheckBoxPreference 
-    android:key="check_screen_on_pref"
-    android:title="Rozjaśnij ekran"
-    android:defaultValue="false"
-    android:summary="Ustaw rozjaśnianie ekranu" />
-    
+    -->
+    <CheckBoxPreference
+        android:defaultValue="true"
+        android:key="check_vibrate_pref"
+        android:summary="Wł./wył. wibracje"
+        android:title="Wibracje" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="check_screen_on_pref"
+        android:summary="Ustaw rozjaśnianie ekranu"
+        android:title="Rozjaśnij ekran" />
 
 </PreferenceScreen>

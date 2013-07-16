@@ -17,38 +17,26 @@
             android:summary="Dodaj nowe numery"
             android:title="Zdefiniuj filtrowane numery" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Przypominanie" >
+<!--     <PreferenceCategory android:title="Przypominanie" >
         <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="missCallCheck"
-            android:summary="Przypominaj o połączeniach "
-            android:title="Nieodebrane połączenia" >
-        </CheckBoxPreference>
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="missSMSCheck"
-            android:summary="Przypominaj o SMSach"
-            android:title="Nieodebrane SMS" >
-        </CheckBoxPreference>
-<!--         <CheckBoxPreference
             android:defaultValue="true"
             android:key="missMMSCheck"
             android:summary="Przypominaj o MMSach"
             android:title="Nieodebrane MMS" >
-        </CheckBoxPreference> -->
-    </PreferenceCategory>
-    <PreferenceCategory android:title="Indywidualne ustawienia" >
+        </CheckBoxPreference>
+    </PreferenceCategory> -->
+<!--     <PreferenceCategory android:title="Indywidualne ustawienia" >
         <Preference
             android:name="add_numbers"
             android:key="call_sett"
-            android:summary="Ustawienia vibracji, dzwięków, LED.."
+            android:summary="Ustawienia wibracji, dzwięków.."
             android:title="Ustawienia połączeń" />
         <Preference
             android:name="add_numbers"
             android:key="sms_sett"
-            android:summary="Ustawienia vibracji, dzwięków, LED.."
-            android:title="Ustawienia SMS/MMS" />
-    </PreferenceCategory>
+            android:summary="Ustawienia wibracji, dzwięków.."
+            android:title="Ustawienia SMS" />
+    </PreferenceCategory> -->
 <PreferenceCategory android:title="Wspólne ustawienia" >
         <ListPreference
             android:defaultValue="500"

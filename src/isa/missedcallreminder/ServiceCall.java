@@ -37,8 +37,7 @@ public class ServiceCall extends Service {
 	DbManager dbManager;
 
 	private ListenerCall listenerCall;
-	IntentFilter intentFilter1 = new IntentFilter(
-			"android.intent.action.PHONE_STATE");
+	IntentFilter intentFilter1 = new IntentFilter("android.intent.action.PHONE_STATE");
 
 	@Override
 	public IBinder onBind(Intent intent) {

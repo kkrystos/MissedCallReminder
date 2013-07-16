@@ -6,13 +6,13 @@
     android:title="Reminder tone"
     android:ringtoneType="notification"
     android:summary="Select or disable reminder tone"  />
-    <ListPreference
+<!--     <ListPreference
     android:key="led_pref"
     android:title="LED color"
     android:summary="Select or disable LED indicator"
     android:entries="@array/led_en"
     android:entryValues="@array/eled_en"
-    android:defaultValue="0" />
+    android:defaultValue="0" /> -->
     <CheckBoxPreference 
     android:key="check_vibrate_pref"
     android:title="Vibration"
