@@ -1,14 +1,16 @@
 package isa.missedcallreminder;
 
+import static isa.missedcallreminder.db.Const.NOTIFICATION_CALL_ID;
+import static isa.missedcallreminder.db.Const.NOTIFICATION_SMS_ID;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
+import isa.missedcallreminder.db.DbManager;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
 
 public class HideNotification extends Activity {
 
@@ -17,49 +19,17 @@ public class HideNotification extends Activity {
 	private Intent ii;
 	private PendingIntent pi;
 	private PendingIntent pii;
-	private String lastCallnumber;
-	private boolean isCall = false;
-	private boolean isSMS = false;
+	private DbManager dbManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-
-		Bundle bundle = getIntent().getExtras();
-		lastCallnumber = bundle.getString("lastCallnumber");
-
-		isCall = bundle.getBoolean("isCall");
-		isSMS = bundle.getBoolean("isSMS");
-
-		Toast.makeText(
-				getApplicationContext(),
-				"isCall " + isCall + "\nisSMS " + isSMS + "\nnr " + lastCallnumber,
-				0).show();
-
-		if (isCall) {
-			reCall();
-		}
-		if (isSMS) {
-			reSMS();
-		}
-
+		dbManager = new DbManager(getApplicationContext());
+		dbManager.deleteTable(NAZWA_TABELI_2);
 		hideAlarm();
 		hideNotification();
+		NotificationListActivity.activity.finish();
 		finish();
-	}
-
-	public void reCall() {
-
-		Intent callIntent = new Intent(Intent.ACTION_CALL);
-		callIntent.setData(Uri.parse("tel:" + lastCallnumber));
-		startActivity(callIntent);
-	}
-
-	public void reSMS() {
-		Intent smsIntent = new Intent(Intent.ACTION_VIEW);
-		smsIntent.setData(Uri.parse("sms:" + lastCallnumber));
-		startActivity(smsIntent);
 	}
 
 	public void hideAlarm() {
@@ -74,7 +44,7 @@ public class HideNotification extends Activity {
 
 	public void hideNotification() {
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		nm.cancel(1);
+		nm.cancel(NOTIFICATION_CALL_ID);
+		nm.cancel(NOTIFICATION_SMS_ID);
 	}
-
 }

@@ -32,9 +32,8 @@
             android:authorities="isa.missedcallreminder.db" />
 
         <activity
-            android:name="isa.missedcallreminder.TestActivity"
+            android:name="isa.missedcallreminder.MainPreferenceActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Wallpaper"
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

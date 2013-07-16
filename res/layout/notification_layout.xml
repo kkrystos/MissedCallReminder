@@ -16,17 +16,19 @@
             android:orientation="vertical" >
 
             <ImageView
-                android:id="@+id/notification_main_img"
-                android:layout_width="76dp"
-                android:layout_height="76dp"
+                android:id="@+id/notification_contactImg"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_gravity="center"
+                android:layout_marginTop="2dip"
                 android:layout_marginLeft="5dip"
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
-                android:id="@+id/imageView1"
+                android:id="@+id/notification_layout_iconImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="1dip"
                 android:layout_marginLeft="5dip"
                 android:src="@android:drawable/sym_call_missed" />
         </LinearLayout>
@@ -34,16 +36,21 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:weightSum="2"
             android:orientation="vertical" >
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal" >
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="4.0" >
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="0dip"
+                    android:layout_weight="3.0"
+                    android:layout_height="match_parent"
                     android:orientation="vertical" >
 
                     <TextView
@@ -53,37 +60,45 @@
                         android:layout_marginLeft="10dip"
                         android:text="Kamil Krystosik"
                         android:textStyle="bold" />
-
+ 
                     <TextView
                         android:id="@+id/notification_main2_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dip"
-                        android:text="Numer/ Treść" />
+                        android:text="Numer Treść d lkjdh aslkjdhalskjd lkjahsdlkjs lkjash laskjhdl ljkashdlkjahsd " />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dip"
+                    android:layout_weight="1.0"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical" >
 
                     <TextView
-                        android:id="@+id/notification_main_GodzinaTv"
+                        android:id="@+id/notification_main_timeTv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="bottom"
+                        android:gravity="center"
+                        android:layout_marginRight="5dip"
                         android:text="12:00"
                         android:textStyle="bold" />
         >
                 </LinearLayout>
             </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dip"
+                android:layout_weight="1"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:weightSum="2" >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
                 android:orientation="horizontal"
+                android:gravity="bottom"
                 android:weightSum="2" >
 
                 <Button
@@ -101,6 +116,7 @@
                     android:layout_marginLeft="15dip"
                     android:layout_weight="1"
                     android:text="sms" />
+            </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

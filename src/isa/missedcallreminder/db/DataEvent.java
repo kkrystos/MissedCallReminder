@@ -2,14 +2,17 @@ package isa.missedcallreminder.db;
 
 
 
-import static isa.missedcallreminder.db.Const.ID;
+import static android.provider.BaseColumns._ID;
 
+import static isa.missedcallreminder.db.Const.ICON;
+import static isa.missedcallreminder.db.Const.ID;
+import static isa.missedcallreminder.db.Const.BODY;
 import static isa.missedcallreminder.db.Const.NAZWA;
 import static isa.missedcallreminder.db.Const.NAZWA_TABELI;
 import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
 import static isa.missedcallreminder.db.Const.NUMER;
 import static isa.missedcallreminder.db.Const.PHOTO;
-import static android.provider.BaseColumns._ID;
+import static isa.missedcallreminder.db.Const.TIME;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -26,11 +29,11 @@ public class DataEvent extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase bd) {
         bd.execSQL("CREATE TABLE " + NAZWA_TABELI + " (" + _ID
-            + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ ID
-            + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT );" );
+            + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ PHOTO
+            + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT," + ICON + " INTEGER );" );
         bd.execSQL("CREATE TABLE " + NAZWA_TABELI_2 + " (" + _ID
                 + " INTEGER PRIMARY KEY AUTOINCREMENT, "+ PHOTO
-                + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT );" );
+                + " TEXT," + NUMER + " TEXT," + NAZWA + " TEXT," + ICON + " INTEGER," + TIME + " TEXT," + BODY + " TEXT );" );
     }
 
     @Override

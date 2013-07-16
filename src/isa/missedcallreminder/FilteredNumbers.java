@@ -156,7 +156,7 @@ public class FilteredNumbers extends ListActivity implements OnClickListener {
 					}
 					if (sb.length() >= 9) {
 						dbManager.dodajZdarzenie(NAZWA_TABELI,"" + i, name,
-								sb.substring(sb.length() - 9));
+								sb.substring(sb.length() - 9), 0);
 					}
 				}
 			}

@@ -18,7 +18,12 @@ public interface Const extends BaseColumns {
     // Kolumny w bazie danych Zdarzenia
     public static final String ID = "id" ;
     public static final String PHOTO = "photo" ;
+    public static final String ICON = "icon" ;
     public static final String NUMER = "numer" ;
     public static final String NAZWA = "nazwa" ;
+    public static final String TIME = "czas" ;
+    public static final String BODY = "body" ;
     public static final String INITIALIZED_CHECKBOX = "initialized_checkbox" ;
+    public static final int NOTIFICATION_CALL_ID = 1;
+    public static final int NOTIFICATION_SMS_ID = 2;
 }

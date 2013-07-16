@@ -1,8 +1,10 @@
 package isa.missedcallreminder;
 
 import static android.provider.BaseColumns._ID;
+
 import static isa.missedcallreminder.db.Const.ID;
 import static isa.missedcallreminder.db.Const.NAZWA;
+import static isa.missedcallreminder.db.Const.PHOTO;
 import static isa.missedcallreminder.db.Const.NAZWA_TABELI;
 import static isa.missedcallreminder.db.Const.NUMER;
 import static isa.missedcallreminder.db.Const.TRESC_URI;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,6 +31,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.PhoneLookup;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -45,9 +49,10 @@ public class FilteredNumber extends PreferenceActivity implements
 
 	private static String phoneNrPick = "";
 	private static String contactName = "";
-	private static String[] FROM = { NAZWA, NUMER, ID, _ID, };
+	private static Uri photoUri;
+	private static String[] FROM = { NAZWA, NUMER, PHOTO, _ID, };
 	private static String ORDER_BY = NAZWA;
-	private static int[] DO = { R.id.nazwa, R.id.numer };
+	private static int[] DO = { R.id.nazwa, R.id.numer, R.id.img_contact  };
 	private String locale;
 	private boolean hasCheckPref = true;
 	private CheckBox checkBoxAll;
@@ -200,14 +205,19 @@ public class FilteredNumber extends PreferenceActivity implements
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
 									+ " = ?", new String[] { id }, null);
 					if (phoneCur.moveToFirst()) {
-						contactName = phoneCur
-								.getString(phoneCur
-										.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-						phoneNrPick = phoneCur
-								.getString(phoneCur
-										.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+						contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+						phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//						photoUri = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
+						String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+						if (photoId != null) {
+							photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) );
+						}else {
+							photoUri = null;
+						}
 					}
-
+					
+					
+					phoneCur.close();
 					String[] temp;
 					String delimiter = "-";
 					temp = phoneNrPick.replaceAll("\\s", "").split(delimiter);
@@ -216,8 +226,14 @@ public class FilteredNumber extends PreferenceActivity implements
 						sb.append(temp[i]);
 					}
 					if (sb.length() >= 9) {
-						dodajZdarzenie(sb.substring(sb.length() - 9),
-								contactName, "");
+						if (photoUri != null) {
+							dodajZdarzenie(sb.substring(sb.length() - 9),photoUri.toString(), photoUri.toString());							
+						}else {
+							dodajZdarzenie(sb.substring(sb.length() - 9),contactName, ""+R.drawable.ic_contact_img);
+						}
+						
+						
+
 						Intent i = new Intent(getApplicationContext(),
 								FilteredNumber.class);
 						startActivity(i);
@@ -225,7 +241,7 @@ public class FilteredNumber extends PreferenceActivity implements
 					}
 				}
 				contect_resolver = null;
-				cur = null;
+				cur.close();
 				finish();
 			}
 
@@ -237,12 +253,66 @@ public class FilteredNumber extends PreferenceActivity implements
 			Log.e("Error :: ", e.toString());
 		}
 	}
+	
+	public String fetchContactIdFromPhoneNumber(String phoneNumber) {
+	    Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
+	        Uri.encode(phoneNumber));
+	    Cursor cursor = this.getContentResolver().query(uri,
+	        new String[] { PhoneLookup.DISPLAY_NAME, PhoneLookup._ID },
+	        null, null, null);
+
+	    String contactId = "";
+
+	    if (cursor.moveToFirst()) {
+	        do {
+	        contactId = cursor.getString(cursor
+	            .getColumnIndex(PhoneLookup._ID));
+	        } while (cursor.moveToNext());
+	    }
+
+	    return contactId;
+	  }
+	
+	public Uri getPhotoUri(long contactId) {
+	    ContentResolver contentResolver = getContentResolver();
+
+	    try {
+	        Cursor cursor = contentResolver
+	            .query(ContactsContract.Data.CONTENT_URI,
+	                null,
+	                ContactsContract.Data.CONTACT_ID
+	                    + "="
+	                    + contactId
+	                    + " AND "
+	                    + ContactsContract.Data.MIMETYPE
+	                    + "='"
+	                    + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE
+	                    + "'", null, null);
+
+	        if (cursor != null) {
+	        if (!cursor.moveToFirst()) {
+	            return null; // no photo
+	        }
+	        } else {
+	        return null; // error in cursor process
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+
+	    Uri person = ContentUris.withAppendedId(
+	        ContactsContract.Contacts.CONTENT_URI, contactId);
+	    return Uri.withAppendedPath(person,
+	        ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
+	  }
 
 	public void dodajZdarzenie(String nr, String nazwa, String photo) {
 		ContentValues wartosci = new ContentValues();
 		wartosci.put(NUMER, nr);
 		wartosci.put(NAZWA, nazwa);
-		// wartosci.put(PHOTO, photo);
+		 wartosci.put(PHOTO, photo);
 		getContentResolver().insert(TRESC_URI, wartosci);
 		finish();
 	}

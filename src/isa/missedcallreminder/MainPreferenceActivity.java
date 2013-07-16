@@ -166,8 +166,8 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 //				Math.random();
 				
 				
-				dbManager.dodajZdarzenie(NAZWA_TABELI_2,"0", "Kamciaks" + (Math.random()*0.01) , ""+(Math.random() * 0.001));
-				Toast.makeText(getApplicationContext(), "dodalem nieodebrane", 0).show();
+//				dbManager.dodajZdarzenie(NAZWA_TABELI_2,"0", "Kamciaks" + (Math.random()*0.01) , ""+(Math.random() * 0.001));
+//				Toast.makeText(getApplicationContext(), "dodalem nieodebrane", 0).show();
 			}
 		});
 		

@@ -38,6 +38,7 @@ public class ServiceSMS extends Service {
 	private ListenerSMS smsListener;
 	IntentFilter intentFilter1 = new IntentFilter("android.provider.Telephony.SMS_RECEIVED");
 	
+	
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub

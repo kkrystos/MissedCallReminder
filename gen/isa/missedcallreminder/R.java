@@ -25,34 +25,37 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int ic_launcher=0x7f020000;
+        public static final int ic_contact_img=0x7f020000;
+        public static final int ic_launcher=0x7f020001;
     }
     public static final class id {
         public static final int button1=0x7f090000;
         public static final int button2=0x7f090001;
-        public static final int buttonCall=0x7f090014;
-        public static final int buttonClearTable=0x7f090016;
-        public static final int buttonSMS=0x7f090015;
-        public static final int buttonStartNotification=0x7f090017;
-        public static final int checkBox1=0x7f090011;
-        public static final int editTextName=0x7f090012;
-        public static final int editTextNumber=0x7f090013;
-        public static final int filtered_numberAddBtn=0x7f090004;
-        public static final int filtered_numberBtn=0x7f090006;
-        public static final int filtered_numbersBtn=0x7f090008;
-        public static final int filtered_numbers_allBtn=0x7f090007;
-        public static final int imageView1=0x7f09000a;
-        public static final int list2=0x7f090005;
-        public static final int menu_settings=0x7f090018;
-        public static final int nazwa=0x7f090002;
-        public static final int noti_callBtn=0x7f09000e;
-        public static final int noti_smsBtn=0x7f09000f;
-        public static final int notification_main2_txt=0x7f09000c;
-        public static final int notification_main_GodzinaTv=0x7f09000d;
-        public static final int notification_main_img=0x7f090009;
-        public static final int notification_main_txt=0x7f09000b;
-        public static final int numer=0x7f090003;
-        public static final int textView1=0x7f090010;
+        public static final int buttonCall=0x7f090016;
+        public static final int buttonClearTable=0x7f090018;
+        public static final int buttonSMS=0x7f090017;
+        public static final int buttonStartNotification=0x7f090019;
+        public static final int checkBox1=0x7f090013;
+        public static final int editTextName=0x7f090014;
+        public static final int editTextNumber=0x7f090015;
+        public static final int filtered_numberAddBtn=0x7f090005;
+        public static final int filtered_numberBtn=0x7f090007;
+        public static final int filtered_numbersBtn=0x7f090009;
+        public static final int filtered_numbers_allBtn=0x7f090008;
+        public static final int img_contact=0x7f090002;
+        public static final int list2=0x7f090006;
+        public static final int menu_settings=0x7f09001a;
+        public static final int nazwa=0x7f090003;
+        public static final int noti_callBtn=0x7f090010;
+        public static final int noti_smsBtn=0x7f090011;
+        public static final int notificationList_clearAllBtn=0x7f09000a;
+        public static final int notification_contactImg=0x7f09000b;
+        public static final int notification_layout_iconImg=0x7f09000c;
+        public static final int notification_main2_txt=0x7f09000e;
+        public static final int notification_main_timeTv=0x7f09000f;
+        public static final int notification_main_txt=0x7f09000d;
+        public static final int numer=0x7f090004;
+        public static final int textView1=0x7f090012;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
