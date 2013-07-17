@@ -14,12 +14,17 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.provider.ContactsContract;
+import android.provider.ContactsContract.PhoneLookup;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -81,7 +86,7 @@ public class DbManager {
 
 	public void pobierzNieodebrane(String tabela, String[] FROM, int[] DO,
 			ListView lv) {
-		Cursor kursor = myDb.query(tabela, null, null, null, null, null, "nazwa");
+		Cursor kursor = myDb.query(tabela, null, null, null, null, null, "_id DESC");
 		activity.startManagingCursor(kursor);
 		MyCursorAdapter myCursorAdapter = new MyCursorAdapter(context,R.layout.notification_layout, kursor, FROM, DO);
 		lv.setAdapter(myCursorAdapter);
@@ -157,6 +162,71 @@ public class DbManager {
 			return convertView;
 		}
 	}
+	
+	public String[] getContactPhotoUri(String phoneNumber){
+		 Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
+			Cursor cur = context.getContentResolver().query(uri, null, null, null, null);
+			ContentResolver contect_resolver = context.getContentResolver();
+			
+			String photoUri = "brakUri/zdj";
+			String contactName = "";
+			String phoneNrPick = "";
+		
+			if (cur.moveToFirst()) {
+				String id = cur.getString(cur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+				long idd = cur.getLong(cur.getColumnIndexOrThrow(ContactsContract.Contacts.Photo._ID));
+
+				Cursor phoneCur = contect_resolver.query(
+						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+						null,
+						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+								+ " = ?", new String[] { id }, null);
+				if (phoneCur.moveToFirst()) {
+					contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+					if (photoId != null) {
+						photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) ).toString();
+//						Log.i("test", "photoUriF: "+photoUri);
+					}else {
+//						Log.i("test", "photoUriF: "+photoUri);
+					}			
+				}
+			}
+		return new String[]{photoUri,contactName};
+		}
+	
+//	public String[] getContactInfo(String phoneNumber){
+//		
+//		 Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI, Uri.encode(phoneNumber));
+//			    Cursor cursor = context.getContentResolver().query(uri, new String[] { PhoneLookup.DISPLAY_NAME, PhoneLookup._ID }, null, null, null);
+//
+//			    String contactId = "";
+//			    String contactName = "";
+//			    String phoneNrPick = "";
+//			    String photoUri = "";
+//
+//			    if (cursor.moveToFirst()) {
+//			        do {
+//			        contactId = cursor.getString(cursor.getColumnIndex(PhoneLookup._ID));
+//			        } while (cursor.moveToNext());
+//			    }
+//			    
+//				Cursor phoneCur = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+//								+ " = ?", new String[] { contactId }, null);
+//			    
+//				if (phoneCur.moveToFirst()) {
+//					contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//					phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+//					String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+////					Log.i("test", "photoId: "+ photoId);
+//					if (photoId != null) {
+//						photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId)).toString();
+//						return new String[]{contactName, photoUri };
+//					}
+//				}
+//				return new String[]{contactName, photoUri };
+//	}
 	
 	public void hideAll(Context context){
 		

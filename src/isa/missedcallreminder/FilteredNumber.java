@@ -68,11 +68,6 @@ public class FilteredNumber extends PreferenceActivity implements
 
 		myCheckPref = PreferenceManager
 				.getDefaultSharedPreferences(getBaseContext());
-//		if (hasCheckPref) {
-//			Toast.makeText(getApplicationContext(), "CHECKED", 0).show();
-//		} else {
-//			Toast.makeText(getApplicationContext(), "UNCHECKED", 0).show();
-//		}
 		dbManager = new DbManager(getApplicationContext(), this);
 		super.onCreate(savedInstanceState);
 		if (locale.equalsIgnoreCase("pl")) {
@@ -186,18 +181,13 @@ public class FilteredNumber extends PreferenceActivity implements
 
 		try {
 			if (resultCode == Activity.RESULT_OK) {
-				Uri contactData = data.getData();
-
+				Uri contactData = data.getData();	
 				Cursor cur = managedQuery(contactData, null, null, null, null);
 				ContentResolver contect_resolver = getContentResolver();
 
 				if (cur.moveToFirst()) {
-					String id = cur
-							.getString(cur
-									.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
-					long idd = cur
-							.getLong(cur
-									.getColumnIndexOrThrow(ContactsContract.Contacts.Photo._ID));
+					String id = cur.getString(cur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+					long idd = cur.getLong(cur.getColumnIndexOrThrow(ContactsContract.Contacts.Photo._ID));
 
 					Cursor phoneCur = contect_resolver.query(
 							ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -205,17 +195,15 @@ public class FilteredNumber extends PreferenceActivity implements
 							ContactsContract.CommonDataKinds.Phone.CONTACT_ID
 									+ " = ?", new String[] { id }, null);
 					if (phoneCur.moveToFirst()) {
-						contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+						contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 						phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 						String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
 						if (photoId != null) {
 							photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) );
 						}else {
 							photoUri = null;
-						}
+						}						
 					}
-					
-					
 					phoneCur.close();
 					String[] temp;
 					String delimiter = "-";
@@ -226,13 +214,13 @@ public class FilteredNumber extends PreferenceActivity implements
 					}
 					if (sb.length() >= 9) {
 						if (photoUri != null) {
+							Log.i("test", "photoUri: "+photoUri);
 							dodajZdarzenie(sb.substring(sb.length() - 9),contactName, photoUri.toString());							
 						}else {
+							Log.i("test", "photoUri: "+"brakFoci");
 							dodajZdarzenie(sb.substring(sb.length() - 9),contactName, ""+R.drawable.ic_contact_img);
 						}
 						
-						
-
 						Intent i = new Intent(getApplicationContext(),
 								FilteredNumber.class);
 						startActivity(i);
@@ -241,9 +229,9 @@ public class FilteredNumber extends PreferenceActivity implements
 				}
 				contect_resolver = null;
 				cur.close();
-				finish();
+				finish();				
 			}
-
+			getContactPhotoUri(phoneNrPick);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			Log.e("IllegalArgumentException :: ", e.toString());
@@ -253,22 +241,61 @@ public class FilteredNumber extends PreferenceActivity implements
 		}
 	}
 	
-	public String fetchContactIdFromPhoneNumber(String phoneNumber) {
+	public String getContactPhotoUri(String phoneNumber){
+		 Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
+			Cursor cur = managedQuery(uri, null, null, null, null);
+			ContentResolver contect_resolver = getContentResolver();
+			
+			String photoUri = "brakUri/zdj";
+			String contactName = "";
+			String phoneNrPick = "";
+			
+		
+			if (cur.moveToFirst()) {
+				String id = cur.getString(cur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+				long idd = cur.getLong(cur.getColumnIndexOrThrow(ContactsContract.Contacts.Photo._ID));
+
+				Cursor phoneCur = contect_resolver.query(
+						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+						null,
+						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+								+ " = ?", new String[] { id }, null);
+				if (phoneCur.moveToFirst()) {
+					contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+					phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					String photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+					if (photoId != null) {
+						photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) ).toString();
+						Log.i("test", "photoUriF: "+photoUri);
+					}else {
+//						photoUri = null;
+						Log.i("test", "photoUriF: "+photoUri);
+					}			
+				
+				}
+				
+			}
+		    
+		return photoUri;
+		
+		}
+	
+	public long fetchContactIdFromPhoneNumber(String phoneNumber) {
 	    Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,
 	        Uri.encode(phoneNumber));
 	    Cursor cursor = this.getContentResolver().query(uri,
 	        new String[] { PhoneLookup.DISPLAY_NAME, PhoneLookup._ID },
 	        null, null, null);
 
-	    String contactId = "";
+	    long contactId = 0;
 
 	    if (cursor.moveToFirst()) {
 	        do {
-	        contactId = cursor.getString(cursor
+	        contactId = cursor.getLong(cursor
 	            .getColumnIndex(PhoneLookup._ID));
 	        } while (cursor.moveToNext());
 	    }
-
+	    
 	    return contactId;
 	  }
 	
@@ -306,6 +333,42 @@ public class FilteredNumber extends PreferenceActivity implements
 	    return Uri.withAppendedPath(person,
 	        ContactsContract.Contacts.Photo.CONTENT_DIRECTORY);
 	  }
+	
+
+	
+	
+	public String[] getContactInfo(String phoneNumber){
+		
+		 Uri uri = Uri.withAppendedPath(PhoneLookup.CONTENT_FILTER_URI,Uri.encode(phoneNumber));
+			    Cursor cursor = this.getContentResolver().query(uri, new String[] { PhoneLookup.DISPLAY_NAME, PhoneLookup._ID }, null, null, null);
+
+			    String contactId = "brakContactu";
+			    String contactName = "brakNazwy";
+			    String phoneNrPick = "brakNumeru";
+			    String photoUri = "brakZdj";
+			    String photoId = "brakPhotoId";
+
+			    if (cursor.moveToFirst()) {
+			        do {
+			        contactId = cursor.getString(cursor.getColumnIndex(PhoneLookup._ID));
+			        } while (cursor.moveToNext());
+			    }
+			    
+				Cursor phoneCur = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+								+ " = ?", new String[] { contactId }, null);
+			    
+				if (phoneCur.moveToFirst()) {
+					contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+					phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+					photoId = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+					if (photoId != null) {
+						photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId)).toString();
+					}
+				}
+				return new String[]{contactId, contactName, phoneNrPick, photoId, photoUri  };
+	}
+	
+
 
 	public void dodajZdarzenie(String nr, String nazwa, String photo) {
 		ContentValues wartosci = new ContentValues();

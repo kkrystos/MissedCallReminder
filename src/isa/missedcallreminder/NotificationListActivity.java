@@ -13,6 +13,8 @@ import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -53,5 +55,18 @@ public final class NotificationListActivity extends ListActivity implements OnCl
 			finish();
 			break;
 		}
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event)
+	{
+	    if(keyCode == KeyEvent.KEYCODE_BACK)
+	    {
+			dbManager.deleteTable(NAZWA_TABELI_2);
+			Intent i = new Intent(this, HideNotification.class);
+			startActivity(i);
+			finish();
+	    	
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 }

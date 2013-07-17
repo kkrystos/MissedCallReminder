@@ -12,16 +12,13 @@ import java.util.Calendar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.telephony.gsm.SmsMessage;
-import android.util.Log;
 import android.widget.Toast;
 
 public class ListenerSMS extends BroadcastReceiver {
@@ -80,10 +77,10 @@ public class ListenerSMS extends BroadcastReceiver {
 					Intent i = new Intent(context, NotificationListActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);					
 					Calendar now = Calendar.getInstance();
-					dbManager.dodajZdarzenie(NAZWA_TABELI_2, getContactName(smsNumberSub)[1], getContactName(smsNumberSub)[0], smsNumberSub, android.R.drawable.sym_action_email,""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[0],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email,""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
 					Intent iNotiSms = new Intent(context, NotificationSmsActivity.class);
 					iNotiSms.putExtra("smsNumberSub", smsNumberSub);
-					iNotiSms.putExtra("smsName", getContactName(smsNumberSub)[0]);
+					iNotiSms.putExtra("smsName", dbManager.getContactPhotoUri(smsNumberSub)[1]);
 					iNotiSms.putExtra("smsBody", smsBody);
 					PendingIntent pi = PendingIntent.getActivity(context, 0, iNotiSms, PendingIntent.FLAG_CANCEL_CURRENT);
 					am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 1000, iintervals, pi);
@@ -93,13 +90,13 @@ public class ListenerSMS extends BroadcastReceiver {
 			} else if (hasCheckPref) {
 				Intent i = new Intent(context, NotificationListActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				Toast.makeText(context,"SMS: " + "from: \n" + smsNumberSub + "\n"+ getContactName(smsNumberSub) + "\n" + smsBody,
+				Toast.makeText(context,"SMS: " + "from: \n" + smsNumberSub + "\n"+ dbManager.getContactPhotoUri(smsNumberSub)[1] + "\n" + smsBody,
 						Toast.LENGTH_SHORT).show();
 				Calendar now = Calendar.getInstance();
-				dbManager.dodajZdarzenie(NAZWA_TABELI_2, getContactName(smsNumberSub)[1], getContactName(smsNumberSub)[0], smsNumberSub, android.R.drawable.sym_action_email, ""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
+				dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[0],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email, ""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
 				Intent iNotiSms = new Intent(context, NotificationSmsActivity.class);
 				iNotiSms.putExtra("smsNumberSub", smsNumberSub);
-				iNotiSms.putExtra("smsName", getContactName(smsNumberSub)[0]);
+				iNotiSms.putExtra("smsName", dbManager.getContactPhotoUri(smsNumberSub)[1]);
 				iNotiSms.putExtra("smsBody", smsBody);
 				PendingIntent pi = PendingIntent.getActivity(context, 0, iNotiSms,PendingIntent.FLAG_CANCEL_CURRENT);
 				am.setRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis() + 1000, iintervals, pi);
@@ -133,36 +130,36 @@ public class ListenerSMS extends BroadcastReceiver {
 		}
 	}
 
-	private String[] getContactName(String number) {
-		String name = "";
-		String photo = "";
-		Cursor cursor = context.getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
-				null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-		while (cursor.moveToNext()) {
-			String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-			String contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//			String contactPhoto
-			String photoId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
-			if (photoId != null) {
-				photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId));
-			}else {
-				photoUri = null;
-			}
-
-			if (convertStringNr(contactNumber).equalsIgnoreCase(number)) {
-				Log.i("nr", "NR: " + convertStringNr(contactNumber) + " NAME: "
-						+ contactName);
-				name = contactName;
-				if (photoUri!=null) {
-					photo = photoUri.toString();
-				} else {
-					photo = "";
-				}
-				return new String[]{name, photo};
-			}
-		}
-		return new String[]{number, ""};
-
-	}
+//	private String[] getContactName(String number) {
+//		String name = "";
+//		String photo = "";
+//		Cursor cursor = context.getContentResolver().query(
+//				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
+//				null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
+//		while (cursor.moveToNext()) {
+//			String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+//			String contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+////			String contactPhoto
+//			String photoId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
+//			if (photoId != null) {
+//				photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId));
+//			}else {
+//				photoUri = null;
+//			}
+//
+//			if (convertStringNr(contactNumber).equalsIgnoreCase(number)) {
+//				Log.i("nr", "NR: " + convertStringNr(contactNumber) + " NAME: "
+//						+ contactName);
+//				name = contactName;
+//				if (photoUri!=null) {
+//					photo = photoUri.toString();
+//				} else {
+//					photo = "";
+//				}
+//				return new String[]{name, photo};
+//			}
+//		}
+//		return new String[]{number, ""};
+//
+//	}
 }

@@ -12,6 +12,7 @@ import java.util.Calendar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +22,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -72,16 +74,17 @@ public class ListenerCall extends BroadcastReceiver {
 					pokazZdarzenia(kursor);
 					kursor.close();
 					if (numerDB != null && numerDB.length() != 0) {
+						Log.i("test", "listener photoURI: "+dbManager.getContactPhotoUri(lastCallnumber)[0]);
 						Intent i = new Intent(context, NotificationListActivity.class);
 						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						Toast.makeText(context, "Nieodebrano : " + lastCallnumber + "\n"+ "!hasCheckPref", Toast.LENGTH_SHORT).show();
 						Calendar now = Calendar.getInstance();
-						dbManager.dodajZdarzenie(NAZWA_TABELI_2,getContactName(lastCallnumber)[1], getContactName(lastCallnumber)[0] ,lastCallnumber,android.R.drawable.sym_call_missed,
+						dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[0],dbManager.getContactPhotoUri(lastCallnumber)[1] ,lastCallnumber,android.R.drawable.sym_call_missed,
 								"" + now.get(Calendar.HOUR_OF_DAY) + ":"
 										+ now.get(Calendar.MINUTE), "");
 						 Intent iNotiCall = new Intent(context, NotificationsActivity.class);
 						 iNotiCall.putExtra("lastCallnumber", lastCallnumber);
-						 iNotiCall.putExtra("lastName", getContactName(lastCallnumber)[0]);
+						 iNotiCall.putExtra("lastName", dbManager.getContactPhotoUri(lastCallnumber)[1]);
 						 PendingIntent pi = PendingIntent.getActivity(context,0, iNotiCall, PendingIntent.FLAG_CANCEL_CURRENT);
 						 Toast.makeText(context,"Nieodebrano : " + lastCallnumber+"\n"+"!hasCheckPref",Toast.LENGTH_SHORT).show();
 						 am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, iintervals, pi);
@@ -89,16 +92,17 @@ public class ListenerCall extends BroadcastReceiver {
 						 numerDB = "";
 					}
 				}else if (hasCheckPref) {
+					Log.i("test", "listener photoURI: "+dbManager.getContactPhotoUri(lastCallnumber)[0]);
 					Intent i = new Intent(context, NotificationListActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					Toast.makeText(context, "Nieodebrano : " + lastCallnumber + "\n"+ "hasCheckPref", Toast.LENGTH_SHORT).show();
 					Calendar now = Calendar.getInstance();
-					dbManager.dodajZdarzenie(NAZWA_TABELI_2,getContactName(lastCallnumber)[1],getContactName(lastCallnumber)[0],lastCallnumber,android.R.drawable.sym_call_missed,"" + now.get(Calendar.HOUR_OF_DAY) + ":"
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[0],dbManager.getContactPhotoUri(lastCallnumber)[1],lastCallnumber,android.R.drawable.sym_call_missed,"" + now.get(Calendar.HOUR_OF_DAY) + ":"
 									+ now.get(Calendar.MINUTE), "");
 					Intent iNotiCall = new Intent(context,
 					 NotificationsActivity.class);
 					iNotiCall.putExtra("lastCallnumber", lastCallnumber);
-					iNotiCall.putExtra("lastName", getContactName(lastCallnumber)[0]);
+					iNotiCall.putExtra("lastName", dbManager.getContactPhotoUri(lastCallnumber)[1]);
 					PendingIntent pi = PendingIntent.getActivity(context, 0, iNotiCall, PendingIntent.FLAG_CANCEL_CURRENT);
 					Toast.makeText(context,"Nieodebrano : " + lastCallnumber+"\n"+"hasCheckPref",Toast.LENGTH_SHORT).show();
 					am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000, iintervals, pi);
@@ -127,51 +131,6 @@ public class ListenerCall extends BroadcastReceiver {
 		}
 	}
 	
-	private String[] getContactName(String number) {
-		
-		String name = "";
-		String photo = "";
-		Cursor cursor = context.getContentResolver().query(
-				ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null,
-				null, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME);
-		try {
-
-			while (cursor.moveToNext()) {
-				String contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-				String contactNumber = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-				String photoId = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_ID));
-				if (photoId != null) {
-					photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId));
-				}else {
-					photoUri = null;
-				}
-
-				if (convertStringNr(contactNumber).equalsIgnoreCase(number)) {
-					Log.i("nr", "NR: " + convertStringNr(contactNumber) + " NAME: "
-							+ contactName);
-					name = contactName;
-					if (photoUri!=null) {
-						photo = photoUri.toString();
-					} else {
-						photo = "";
-					}
-					return new String[]{name, photo};
-				}
-			}
-			
-			
-		} catch (Exception e) {
-			Log.i("Listener", e.getMessage());
-		}finally{
-			cursor.close();
-		}
-	 return new String[]{number, ""};
-		
-
-
-
-
-	}
 	
 	public void pokazZdarzenia(Cursor kursor) {
 		while (kursor.moveToNext()) {
