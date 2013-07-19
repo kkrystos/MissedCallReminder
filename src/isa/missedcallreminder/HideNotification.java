@@ -1,4 +1,5 @@
 package isa.missedcallreminder;
+import android.R.drawable;
 
 import static isa.missedcallreminder.db.Const.NOTIFICATION_CALL_ID;
 import static isa.missedcallreminder.db.Const.NOTIFICATION_SMS_ID;
@@ -28,7 +29,9 @@ public class HideNotification extends Activity {
 		dbManager.deleteTable(NAZWA_TABELI_2);
 		hideAlarm();
 		hideNotification();
-		NotificationListActivity.activity.finish();
+		if (!NotificationListActivity.activity.isFinishing()) {
+			NotificationListActivity.activity.finish();
+		}
 		finish();
 	}
 
@@ -40,6 +43,7 @@ public class HideNotification extends Activity {
 		pii = PendingIntent.getActivity(this, 0, ii, 0);
 		am.cancel(pi);
 		am.cancel(pii);
+
 	}
 
 	public void hideNotification() {

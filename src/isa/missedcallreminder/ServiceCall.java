@@ -55,6 +55,8 @@ public class ServiceCall extends Service {
 		// dbManager = new DbManager(getApplicationContext());
 		listenerCall = new ListenerCall();
 		registerReceiver(listenerCall, intentFilter1);
+		Toast.makeText(getApplicationContext(), "listenerCall start", 0).show();
+		
 	}
 
 	@Override

@@ -21,16 +21,16 @@
                 android:layout_width="70dp"
                 android:layout_height="70dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="2dip"
                 android:layout_marginLeft="5dip"
+                android:layout_marginTop="2dip"
                 android:src="@drawable/ic_launcher" />
 
             <ImageView
                 android:id="@+id/notification_layout_iconImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="1dip"
                 android:layout_marginLeft="5dip"
+                android:layout_marginTop="1dip"
                 android:src="@android:drawable/sym_call_missed" />
         </LinearLayout>
 
@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="bottom"
-            android:weightSum="2"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:weightSum="2" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,8 +50,8 @@
 
                 <LinearLayout
                     android:layout_width="0dip"
-                    android:layout_weight="3.0"
                     android:layout_height="match_parent"
+                    android:layout_weight="3.0"
                     android:orientation="vertical" >
 
                     <TextView
@@ -62,20 +62,20 @@
                         android:text="Kamil Krystosik"
                         android:textColor="#F8F8F8"
                         android:textStyle="bold" />
- 
+
                     <TextView
                         android:id="@+id/notification_main2_txt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-						android:textColor="#F8F8F8"
                         android:layout_marginLeft="10dip"
-                        android:text="Numer Treść d lkjdh aslkjdhalskjd lkjahsdlkjs lkjash laskjhdl ljkashdlkjahsd " />
+                        android:text="Numer Treść d lkjdh aslkjdhalskjd lkjahsdlkjs lkjash laskjhdl ljkashdlkjahsd "
+                        android:textColor="#F8F8F8" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dip"
-                    android:layout_weight="1.0"
                     android:layout_height="match_parent"
+                    android:layout_weight="1.0"
                     android:gravity="right"
                     android:orientation="vertical" >
 
@@ -83,43 +83,54 @@
                         android:id="@+id/notification_main_timeTv"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="center"
-						android:textColor="#F8F8F8"
                         android:layout_marginRight="5dip"
+                        android:gravity="center"
                         android:text="12:00"
+                        android:textColor="#F8F8F8"
                         android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dip"
-                android:layout_weight="1"
                 android:layout_gravity="bottom"
+                android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="2" >
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:gravity="bottom"
-                android:weightSum="2" >
 
-                <Button
-                    android:id="@+id/noti_callBtn"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dip"
-                    android:layout_weight="1"
-                    android:text="call" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:weightSum="2" >
 
-                <Button
-                    android:id="@+id/noti_smsBtn"
-                    android:layout_width="0dip"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dip"
-                    android:layout_weight="1"
-                    android:text="sms" />
-            </LinearLayout>
+                    <Button
+                        android:id="@+id/noti_callBtn"
+                        android:focusable="true"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dip"
+                        android:layout_weight="1"
+                        android:background="#666666"
+                        android:drawableLeft="@android:drawable/ic_menu_call"
+                        android:text="Call"
+                        android:textStyle="bold"
+                        android:textColor="#F8F8F8" />
+
+                    <Button
+                        android:id="@+id/noti_smsBtn"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dip"
+                        android:layout_weight="1"
+                        android:background="#666666"
+                        android:drawableLeft="@android:drawable/ic_menu_send"
+                        android:text="Sms"
+                        android:textStyle="bold"
+                        android:textColor="#F8F8F8" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
