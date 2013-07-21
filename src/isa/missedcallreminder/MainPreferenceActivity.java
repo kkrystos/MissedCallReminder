@@ -96,8 +96,8 @@ public class MainPreferenceActivity extends PreferenceActivity implements
 //					nm.notify(1, noti.build());
 //				}
 				//call oks
-			Intent	i = new Intent(getApplicationContext(), NotificationListActivity.class);
-			startActivity(i);
+//			Intent	i = new Intent(getApplicationContext(), NotificationListActivity.class);
+//			startActivity(i);
 //				i.putExtra("lastCallnumber", "517515654");
 //				i.putExtra("lastName", "Kamciaks");
 //				PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0,

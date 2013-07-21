@@ -108,16 +108,16 @@
 
                     <Button
                         android:id="@+id/noti_callBtn"
-                        android:focusable="true"
                         android:layout_width="0dip"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dip"
                         android:layout_weight="1"
-                        android:background="#666666"
+                        android:background="@drawable/selector_call"
                         android:drawableLeft="@android:drawable/ic_menu_call"
+                        android:focusable="true"
                         android:text="Call"
-                        android:textStyle="bold"
-                        android:textColor="#F8F8F8" />
+                        android:textColor="#F8F8F8"
+                        android:textStyle="bold" />
 
                     <Button
                         android:id="@+id/noti_smsBtn"
@@ -125,11 +125,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dip"
                         android:layout_weight="1"
-                        android:background="#666666"
+                        android:background="@drawable/selector_call"
                         android:drawableLeft="@android:drawable/ic_menu_send"
                         android:text="Sms"
-                        android:textStyle="bold"
-                        android:textColor="#F8F8F8" />
+                        android:textColor="#F8F8F8"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

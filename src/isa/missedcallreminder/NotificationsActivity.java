@@ -144,8 +144,8 @@ public class NotificationsActivity extends Activity {
 //
 //		} else {
 			NotificationCompat.Builder noti = new NotificationCompat.Builder(getApplicationContext()).setLargeIcon(
-							BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
-					.setSmallIcon(R.drawable.ic_launcher)
+							BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher_new))
+					.setSmallIcon(R.drawable.ic_launcher_new)
 					.setTicker("Nieodebrane Po³¹czenie " +lastName)
 					.setWhen(System.currentTimeMillis())
 					.setContentTitle("Nieodebrane Po³¹czenie")

@@ -8,6 +8,8 @@
         android:id="@+id/notificationList_clearAllBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:drawableRight="@android:drawable/btn_dialog"
+        android:background="@drawable/selector_call"
         android:text="Wyczyść listę" />
 
 	<ListView

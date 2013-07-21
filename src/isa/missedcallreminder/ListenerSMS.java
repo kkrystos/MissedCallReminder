@@ -77,7 +77,7 @@ public class ListenerSMS extends BroadcastReceiver {
 					Intent i = new Intent(context, NotificationListActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);					
 					Calendar now = Calendar.getInstance();
-					dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[0],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email,""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[2],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email,""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
 					Intent iNotiSms = new Intent(context, NotificationSmsActivity.class);
 					iNotiSms.putExtra("smsNumberSub", smsNumberSub);
 					iNotiSms.putExtra("smsName", dbManager.getContactPhotoUri(smsNumberSub)[1]);
@@ -93,7 +93,7 @@ public class ListenerSMS extends BroadcastReceiver {
 				Toast.makeText(context,"SMS: " + "from: \n" + smsNumberSub + "\n"+ dbManager.getContactPhotoUri(smsNumberSub)[1] + "\n" + smsBody,
 						Toast.LENGTH_SHORT).show();
 				Calendar now = Calendar.getInstance();
-				dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[0],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email, ""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
+				dbManager.dodajZdarzenie(NAZWA_TABELI_2, dbManager.getContactPhotoUri(smsNumberSub)[2],dbManager.getContactPhotoUri(smsNumberSub)[1], smsNumberSub, android.R.drawable.sym_action_email, ""+now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE), smsBody);
 				Intent iNotiSms = new Intent(context, NotificationSmsActivity.class);
 				iNotiSms.putExtra("smsNumberSub", smsNumberSub);
 				iNotiSms.putExtra("smsName", dbManager.getContactPhotoUri(smsNumberSub)[1]);

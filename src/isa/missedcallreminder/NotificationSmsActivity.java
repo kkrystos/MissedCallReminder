@@ -139,8 +139,8 @@ public class NotificationSmsActivity extends Activity {
 //			nm.notify(NOTIFICATION_SMS_ID, noti.build());
 //		} else {
 			NotificationCompat.Builder noti = new NotificationCompat.Builder(getApplicationContext())
-					.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher))
-					.setSmallIcon(R.drawable.ic_launcher)
+					.setLargeIcon(BitmapFactory.decodeResource(getResources(),R.drawable.ic_launcher_new))
+					.setSmallIcon(R.drawable.ic_launcher_new)
 					.setTicker("Nieodczytany SMS " + smsName)
 					.setWhen(System.currentTimeMillis())
 					.setContentTitle("Nieodczytany SMS")

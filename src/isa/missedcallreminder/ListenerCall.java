@@ -12,8 +12,6 @@ import java.util.Calendar;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,8 +19,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
-import android.provider.ContactsContract.PhoneLookup;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -79,7 +75,7 @@ public class ListenerCall extends BroadcastReceiver {
 						i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						Toast.makeText(context, "Nieodebrano : " + lastCallnumber + "\n"+ "!hasCheckPref", Toast.LENGTH_SHORT).show();
 						Calendar now = Calendar.getInstance();
-						dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[0],dbManager.getContactPhotoUri(lastCallnumber)[1] ,lastCallnumber,android.R.drawable.sym_call_missed,
+						dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[2],dbManager.getContactPhotoUri(lastCallnumber)[1] ,lastCallnumber,android.R.drawable.sym_call_missed,
 								"" + now.get(Calendar.HOUR_OF_DAY) + ":"
 										+ now.get(Calendar.MINUTE), "");
 						 Intent iNotiCall = new Intent(context, NotificationsActivity.class);
@@ -97,7 +93,7 @@ public class ListenerCall extends BroadcastReceiver {
 					i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 					Toast.makeText(context, "Nieodebrano : " + lastCallnumber + "\n"+ "hasCheckPref", Toast.LENGTH_SHORT).show();
 					Calendar now = Calendar.getInstance();
-					dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[0],dbManager.getContactPhotoUri(lastCallnumber)[1],lastCallnumber,android.R.drawable.sym_call_missed,"" + now.get(Calendar.HOUR_OF_DAY) + ":"
+					dbManager.dodajZdarzenie(NAZWA_TABELI_2,dbManager.getContactPhotoUri(lastCallnumber)[2],dbManager.getContactPhotoUri(lastCallnumber)[1],lastCallnumber,android.R.drawable.sym_call_missed,"" + now.get(Calendar.HOUR_OF_DAY) + ":"
 									+ now.get(Calendar.MINUTE), "");
 					Intent iNotiCall = new Intent(context,
 					 NotificationsActivity.class);

@@ -1,12 +1,16 @@
 package isa.missedcallreminder.db;
 
-import static isa.missedcallreminder.db.Const.ICON;
 import static isa.missedcallreminder.db.Const.BODY;
+import static isa.missedcallreminder.db.Const.ICON;
 import static isa.missedcallreminder.db.Const.NAZWA;
+import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
 import static isa.missedcallreminder.db.Const.NUMER;
 import static isa.missedcallreminder.db.Const.PHOTO;
 import static isa.missedcallreminder.db.Const.TIME;
-import static isa.missedcallreminder.db.Const.NAZWA_TABELI_2;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
 import isa.missedcallreminder.NotificationSmsActivity;
 import isa.missedcallreminder.NotificationsActivity;
 import isa.missedcallreminder.R;
@@ -21,6 +25,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.PhoneLookup;
@@ -30,7 +36,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -156,7 +161,21 @@ public class DbManager {
 			});
 			holder.imageIcon.setImageResource(cursor.getInt(cursor.getColumnIndex(ICON)));
 			if (!cursor.getString(cursor.getColumnIndex(PHOTO)).equalsIgnoreCase("")) {
-				holder.imageContact.setImageURI(Uri.parse(cursor.getString(cursor.getColumnIndex(PHOTO))));
+				Uri my_contact_Uri = Uri.withAppendedPath(
+						ContactsContract.Contacts.CONTENT_URI,
+						cursor.getString(cursor.getColumnIndex(PHOTO)));
+				InputStream photo_stream = ContactsContract.Contacts
+						.openContactPhotoInputStream(
+								context.getContentResolver(), my_contact_Uri);
+				BufferedInputStream buf = new BufferedInputStream(photo_stream);
+				Log.i("test", "BufferedInputStream: " + buf);
+				Bitmap my_btmp = BitmapFactory.decodeStream(buf);
+				Log.i("test", "Bitmap: " + my_btmp);
+				if (my_btmp != null) {
+					holder.imageContact.setImageBitmap(my_btmp);
+				}else {
+					holder.imageContact.setImageResource(R.drawable.ic_contact_img);
+				}
 			} else {
 				holder.imageContact.setImageResource(R.drawable.ic_contact_img);
 			}
@@ -169,19 +188,20 @@ public class DbManager {
 			Cursor cur = context.getContentResolver().query(uri, null, null, null, null);
 			ContentResolver contect_resolver = context.getContentResolver();
 			
-			String photoUri = "brakUri/zdj";
+			String photoUri = "";
 			String contactName = "";
 			String phoneNrPick = "";
+			String cintactId = "";
 		
 			if (cur.moveToFirst()) {
-				String id = cur.getString(cur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
+				cintactId = cur.getString(cur.getColumnIndexOrThrow(ContactsContract.Contacts._ID));
 				long idd = cur.getLong(cur.getColumnIndexOrThrow(ContactsContract.Contacts.Photo._ID));
 
 				Cursor phoneCur = contect_resolver.query(
 						ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
 						null,
 						ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-								+ " = ?", new String[] { id }, null);
+								+ " = ?", new String[] { cintactId }, null);
 				if (phoneCur.moveToFirst()) {
 					contactName = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
 					phoneNrPick = phoneCur.getString(phoneCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
@@ -189,12 +209,11 @@ public class DbManager {
 					if (photoId != null) {
 						photoUri = ContentUris.withAppendedId(ContactsContract.Data.CONTENT_URI, Long.parseLong(photoId) ).toString();
 //						Log.i("test", "photoUriF: "+photoUri);
-					}else {
-//						Log.i("test", "photoUriF: "+photoUri);
-					}			
+					}		
 				}
 			}
-		return new String[]{photoUri,contactName};
+			Log.i("test", "cintactId: "+cintactId);
+		return new String[]{photoUri,contactName, cintactId};
 		}
 	
 //	public String[] getContactInfo(String phoneNumber){
